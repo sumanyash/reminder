@@ -512,6 +512,153 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 /* ── b-ok alias ── */
 .b-ok{background:rgba(22,163,74,.12);color:var(--ok);border:1px solid rgba(22,163,74,.2);}
 
+/* ══ ENTERPRISE POLISH ══════════════════════════════ */
+
+/* Sidebar — pill nav, no left border */
+.sidebar{width:212px;}
+.nav-sep{height:1px;background:var(--sb-border);margin:8px 14px;}
+.nav-item{
+  border-left:none!important;
+  border-radius:9px;
+  margin:1px 8px;
+  padding:9px 11px;
+  gap:10px;
+  font-size:13px;
+  letter-spacing:-.01em;
+}
+.nav-item .ni{
+  display:flex;align-items:center;justify-content:center;
+  width:18px;flex-shrink:0;opacity:.8;
+}
+.nav-item:hover .ni{opacity:1;}
+.nav-item.active .ni{opacity:1;}
+.nav-item.active{
+  background:rgba(255,255,255,.14)!important;
+  border-left:none!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.nav-badge{margin-left:auto;}
+.sb-logo .icon{border-radius:12px;background:linear-gradient(135deg,#1565c0,#0d47a1);}
+.sb-footer{padding:.85rem 1rem;}
+.btn-out svg{display:block;}
+
+/* Main content header */
+.ph-left h2{font-size:20px;font-weight:700;letter-spacing:-.4px;}
+
+/* Cards — no border, layered shadow */
+.card{
+  border:none!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.04);
+}
+.card:hover{box-shadow:0 2px 6px rgba(0,0,0,.07),0 8px 24px rgba(0,0,0,.06);}
+
+/* Stats — color-coded top border */
+.stats{gap:.9rem;}
+.stat{
+  border:none!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.04);
+  border-top:3px solid transparent!important;
+  padding:1.1rem 1.2rem;
+}
+.stat:nth-child(1){border-top-color:#1565c0!important;}
+.stat:nth-child(2){border-top-color:#16a34a!important;}
+.stat:nth-child(3){border-top-color:#d97706!important;}
+.stat:nth-child(4){border-top-color:#dc2626!important;}
+.stat:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,.08),0 12px 32px rgba(0,0,0,.06);}
+.stat .s-label{color:var(--txt3);font-weight:700;letter-spacing:.06em;}
+.stat .s-val{font-weight:800;letter-spacing:-.03em;}
+.stat-icon{font-size:20px;}
+
+/* Table — enterprise headers */
+.tbl-wrap{border-radius:0;}
+th{
+  background:#f5f8fd;
+  font-weight:700;
+  letter-spacing:.08em;
+  font-size:10px;
+  color:#4a6fa5;
+  border-bottom:2px solid #e2eaf6!important;
+  padding:11px 13px;
+}
+td{padding:12px 13px;border-bottom:1px solid #f1f5fb;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f8fbff;}
+
+/* Reminder cards — enterprise style */
+.reminder-card{
+  border:none!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+  border-radius:12px;
+  padding:.9rem 1rem;
+}
+.reminder-card:hover{
+  box-shadow:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);
+  transform:translateY(-1px);
+}
+.reminder-card.esc{border-left:3px solid var(--err)!important;}
+
+/* Buttons — enterprise */
+.btn{border-radius:8px;font-weight:600;letter-spacing:-.01em;}
+.btn-primary{background:linear-gradient(135deg,#1264e2,#0d47a1);}
+.btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#1976d2,#1264e2);}
+.btn-sm{border-radius:7px;}
+.btn-xs{border-radius:6px;padding:4px 9px;}
+
+/* Form — cleaner labels */
+.fg label{font-size:10px;font-weight:700;letter-spacing:.12em;color:#5c7499;margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{
+  border-radius:8px;
+  border:1.5px solid #dde6f0;
+  background:#f8fafd;
+  font-size:13px;
+  padding:10px 12px;
+  transition:border-color .2s,box-shadow .2s,background .2s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:#1264e2;
+  box-shadow:0 0 0 3px rgba(18,100,226,.1);
+  background:#fff;
+}
+
+/* Export bar */
+.export-bar{
+  border:none!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.03);
+  border-radius:10px;
+}
+
+/* Pen items */
+.pen-item{
+  border:none!important;
+  border-left:3px solid var(--err)!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.03);
+  border-radius:10px;
+}
+.pen-item:hover{background:var(--s2);box-shadow:0 2px 8px rgba(0,0,0,.07);}
+
+/* Badge refinement */
+.badge{font-size:10px;font-weight:600;padding:3px 8px;}
+.nav-badge{font-size:9px;padding:1px 6px;min-width:18px;text-align:center;}
+
+/* Modals */
+.modal{border:none!important;box-shadow:0 8px 32px rgba(0,0,0,.14),0 32px 80px rgba(0,0,0,.1);}
+.overlay{background:rgba(15,23,42,.5);}
+
+/* Sheet pill */
+.sheet-pill{border:none;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+
+/* Mobile bottom nav — SVG icons */
+.mbn-icon{display:block;}
+
+/* Dark mode stat borders */
+[data-theme="dark"] .stat:nth-child(1){border-top-color:#4a90d9!important;}
+[data-theme="dark"] .stat:nth-child(2){border-top-color:#22c55e!important;}
+[data-theme="dark"] .stat:nth-child(3){border-top-color:#f59e0b!important;}
+[data-theme="dark"] .stat:nth-child(4){border-top-color:#ef4444!important;}
+[data-theme="dark"] th{background:rgba(255,255,255,.04);color:var(--txt3);border-bottom-color:var(--b1)!important;}
+[data-theme="dark"] td{border-bottom-color:var(--b1);}
+[data-theme="dark"] .fg input,[data-theme="dark"] .fg select,[data-theme="dark"] .fg textarea{background:var(--s2);border-color:var(--b2);}
+
 /* ── FAB ── */
 .fab-btn{
   position:fixed; right:20px; bottom:80px; z-index:190;
@@ -651,43 +798,55 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
     <div><div class="title">Avyukta Intellicall</div><div class="sub">PANEL</div></div>
   </div>
 
-  <div class="nav-section">Overview</div>
   <div class="nav-item active" id="nav-dashboard" onclick="showSec('dashboard')">
-    <span class="ni">▦</span> Dashboard
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+    <span>Dashboard</span>
   </div>
 
-  <div class="nav-section">Manage</div>
+  <div class="nav-sep"></div>
+
   <div class="nav-item" id="nav-reminders" onclick="showSec('reminders')">
-    <span class="ni">✓</span> Reminders
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg></span>
+    <span>Reminders</span>
   </div>
   <div class="nav-item" id="nav-cards" onclick="showSec('cards')">
-    <span class="ni">⚠</span> Penalty Cards <span class="nav-badge hidden" id="cardBadge">0</span>
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+    <span>Penalty Cards</span>
+    <span class="nav-badge hidden" id="cardBadge">0</span>
   </div>
-  
   <div class="nav-item" id="nav-profile" onclick="showSec('profile')">
-    <span class="ni">👤</span> My Profile
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></span>
+    <span>My Profile</span>
   </div>
 
-  <div class="nav-section admin-nav-section hidden">System</div>
+  <div class="nav-sep admin-nav-section hidden"></div>
+
   <div class="nav-item hidden" id="nav-employees" onclick="showSec('employees')">
-    <span class="ni">👥</span> Employees
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+    <span>Employees</span>
   </div>
   <div class="nav-item hidden" id="nav-notifications" onclick="showSec('notifications')">
-    <span class="ni">🔔</span> Notification Log
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+    <span>Notif Log</span>
   </div>
   <div class="nav-item hidden" id="nav-settings" onclick="showSec('settings')">
-    <span class="ni">⚙</span> Settings
+    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
+    <span>Settings</span>
   </div>
 
   <div class="sb-footer">
     <div class="user-chip">
       <div class="avatar" id="sbAvatar">AD</div>
-      <div class="uc-info" style="flex:1;">
+      <div class="uc-info" style="flex:1;min-width:0;">
         <div class="name" id="sbName">Admin</div>
         <div class="role" id="sbRole">Administrator</div>
       </div>
-      <button class="btn-out theme-btn" onclick="toggleTheme()" title="Toggle Light/Dark Mode">☀️</button>
-      <button class="btn-out" onclick="logout()" title="Logout">⏻</button>
+      <button class="btn-out theme-btn" onclick="toggleTheme()" title="Toggle theme" style="font-size:14px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <button class="btn-out" onclick="logout()" title="Sign Out" style="font-size:14px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
     </div>
   </div>
 </div>
@@ -699,13 +858,13 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
       <div class="ph-left"><h2>Dashboard</h2><p id="dashSubText">Live overview of reminders &amp; team activity</p></div>
       <div class="ph-right">
         <div class="sheet-pill"><span class="dot" id="sheetDot"></span><span id="sheetTxt">Checking…</span></div>
-        <button class="btn btn-ghost btn-sm" onclick="forceSheetsSync()" style="margin-left: 8px;">🔄 Refresh</button>
+        <button class="btn btn-ghost btn-sm" onclick="forceSheetsSync()" style="margin-left:8px;display:inline-flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Refresh</button>
       </div>
 
     </div>
 
-    <div style="background:var(--s2); padding:10px 16px; border-radius:8px; margin-bottom:1.25rem; font-size:11px; color:var(--txt3); font-family:'DM Mono',monospace;">
-      Data Status: Employees: <span id="dataEmpCount">0</span> | Reminders: <span id="dataRemCount">0</span> | Cards: <span id="dataCardCount">0</span> | Notifications: <span id="dataNotifCount">0</span>
+    <div style="display:none;">
+      <span id="dataEmpCount">0</span><span id="dataRemCount">0</span><span id="dataCardCount">0</span><span id="dataNotifCount">0</span>
     </div>
     
     <div class="stats" id="statsRow"></div>
@@ -991,23 +1150,23 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 <!-- ── MOBILE BOTTOM NAV ── -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav">
   <div class="mbn-item active" id="mbn-dashboard" onclick="showSec('dashboard')">
-    <div class="mbn-icon-wrap"><span class="mbn-icon">▦</span></div>
+    <div class="mbn-icon-wrap"><svg class="mbn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
     <span class="mbn-label">Home</span>
   </div>
   <div class="mbn-item" id="mbn-reminders" onclick="showSec('reminders')">
-    <div class="mbn-icon-wrap"><span class="mbn-icon">✓</span></div>
+    <div class="mbn-icon-wrap"><svg class="mbn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg></div>
     <span class="mbn-label">Tasks</span>
   </div>
   <div class="mbn-item" id="mbn-cards" onclick="showSec('cards')">
-    <div class="mbn-icon-wrap"><span class="mbn-icon">⚠</span><span class="mbn-badge hidden" id="mbnCardBadge">0</span></div>
+    <div class="mbn-icon-wrap"><svg class="mbn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span class="mbn-badge hidden" id="mbnCardBadge">0</span></div>
     <span class="mbn-label">Cards</span>
   </div>
   <div class="mbn-item admin-mbn hidden" id="mbn-employees" onclick="showSec('employees')">
-    <div class="mbn-icon-wrap"><span class="mbn-icon">👥</span></div>
+    <div class="mbn-icon-wrap"><svg class="mbn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
     <span class="mbn-label">Team</span>
   </div>
   <div class="mbn-item" id="mbn-profile" onclick="showSec('profile')">
-    <div class="mbn-icon-wrap"><span class="mbn-icon">👤</span></div>
+    <div class="mbn-icon-wrap"><svg class="mbn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>
     <span class="mbn-label">Profile</span>
   </div>
 </nav>
