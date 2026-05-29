@@ -299,9 +299,261 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.5rem 0;}
 #imgModalContent { max-width: 90vw; max-height: 90vh; border-radius: var(--r); box-shadow: 0 10px 40px rgba(0,0,0,0.5); object-fit: contain; }
 </style>
 <style>
-/* ── CRM-MATCHING THEME (Avyukta Intellicall style) ── */
-:root {
-  --bg:   #eef2f7;
+/* ══ DESIGN SYSTEM — Avyukta Reminder Panel ══════════ */
+:root{
+  --bg:#eef2f8;--s1:#fff;--s2:#f4f7fb;--s3:#e8eef6;--s4:#dae3f0;
+  --b1:rgba(0,0,0,.06);--b2:rgba(0,0,0,.11);--b3:rgba(0,0,0,.19);
+  --acc:#1565c0;--acc2:#0d47a1;--ok:#16a34a;--warn:#d97706;--err:#dc2626;
+  --txt:#0f172a;--txt2:#2e4a7a;--txt3:#5c7499;
+  --r:10px;--r2:14px;
+  --sb-bg:#1b2544;--sb-border:rgba(255,255,255,.07);
+  --sb-txt:#c5d3ec;--sb-txt2:#7a96c4;
+  --sb-hover:rgba(255,255,255,.07);--sb-active:rgba(25,101,192,.25);--sb-accent:#4a90d9;
+}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--txt);transition:background .3s,color .3s;}
+body::before{display:none;}
+::selection{background:rgba(21,101,192,.18);color:inherit;}
+
+/* ── LOGIN ── */
+#loginPage{background:radial-gradient(ellipse 85% 55% at 50% 0%,#1e3a6a,#0b1525 70%);}
+.login-card{background:rgba(18,28,52,.97);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:2rem 1.75rem;box-shadow:0 24px 60px rgba(0,0,0,.45);backdrop-filter:blur(20px);}
+.brand h1{color:#fff;font-size:22px;}.brand p{color:rgba(255,255,255,.4);}
+.brand-icon{background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:16px;box-shadow:0 10px 24px rgba(13,71,161,.35);}
+#loginPage .fg label{color:rgba(255,255,255,.4);font-weight:600;}
+#loginPage .fg input,#loginPage .fg select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:12px;padding:12px 14px;}
+#loginPage .fg input::placeholder{color:rgba(255,255,255,.28);}
+#loginPage .fg input:focus,#loginPage .fg select:focus{border-color:rgba(74,144,217,.75);box-shadow:0 0 0 3px rgba(74,144,217,.14);background:rgba(255,255,255,.09);}
+#loginPage .btn-primary{background:linear-gradient(135deg,#1565c0,#0d47a1);padding:13px;}
+
+/* ── SIDEBAR (always dark) ── */
+.sidebar{background:var(--sb-bg)!important;border-right:1px solid var(--sb-border)!important;width:220px;}
+.sb-logo{padding:1.1rem 1rem .9rem;border-bottom:1px solid var(--sb-border)!important;}
+.sb-logo .title{color:#fff!important;font-size:15px;}.sb-logo .sub{color:var(--sb-txt2)!important;}
+.sb-logo .icon{width:36px;height:36px;border-radius:12px;}
+.nav-section{padding:.55rem 1rem .2rem;color:var(--sb-txt2)!important;font-size:9.5px;}
+.nav-item{padding:9px 1rem;color:var(--sb-txt)!important;border-left:2px solid transparent;font-size:13px;}
+.nav-item:hover{background:var(--sb-hover)!important;color:#fff!important;}
+.nav-item.active{background:var(--sb-active)!important;border-left-color:var(--sb-accent)!important;color:#fff!important;}
+.sb-footer{border-top:1px solid var(--sb-border)!important;padding:.85rem 1rem;}
+.uc-info .name{color:#fff!important;font-size:12px;}.uc-info .role{color:var(--sb-txt2)!important;font-size:10px;}
+.btn-out{color:var(--sb-txt2)!important;}.btn-out:hover{color:#f87171!important;}
+.av-admin{background:linear-gradient(135deg,#1565c0,#0d47a1);}
+
+/* ── MOBILE TOPBAR ── */
+.mobile-topbar{background:var(--sb-bg)!important;border-bottom:1px solid var(--sb-border)!important;padding:.7rem 1rem;position:sticky;top:0;z-index:90;}
+.mobile-topbar .title-text{color:#fff;font-size:16px;font-family:'Jost',sans-serif;font-style:italic;font-weight:700;}
+.mobile-nav-btn{color:rgba(255,255,255,.7)!important;font-size:20px;}
+
+/* ── LAYOUT / MAIN ── */
+.main{padding:1.35rem 1.75rem;background:var(--bg);}
+.ph{margin-bottom:1rem;}.ph-left h2{font-size:19px;}.ph-left p{font-size:12px;color:var(--txt3);margin-top:2px;}
+
+/* ── CARDS ── */
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:1.25rem;box-shadow:0 1px 6px rgba(0,0,0,.05);transition:box-shadow .2s,transform .2s;}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.09);}
+.ch{margin-bottom:1rem;}.ct{font-size:14px;}
+
+/* ── STATS ── */
+.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.875rem;margin-bottom:1.1rem;}
+.stat{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:1rem 1.1rem;box-shadow:0 1px 5px rgba(0,0,0,.04);transition:all .2s;}
+.stat:hover{border-color:rgba(21,101,192,.2);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.09);}
+.stat .s-label{font-size:10.5px;margin-bottom:6px;}.stat .s-val{font-size:28px;}.stat .s-sub{font-size:10.5px;margin-top:4px;}
+
+/* ── TABLE ── */
+.tbl-wrap{border-radius:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{font-size:12.5px;}
+th{background:#f0f4fa;color:var(--txt3);padding:9px 12px;font-size:10px;white-space:nowrap;}
+td{padding:10px 12px;}
+tr:hover td{background:#f7f9fd;}
+.tbl-wrap::-webkit-scrollbar{height:4px;}.tbl-wrap::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px;}
+
+/* ── BUTTONS ── */
+.btn{border-radius:9px;font-weight:600;transition:all .18s;font-size:13px;}
+.btn:hover:not(:disabled){transform:translateY(-1px);}
+.btn-primary{background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;box-shadow:0 3px 10px rgba(13,71,161,.22);}
+.btn-primary:hover:not(:disabled){box-shadow:0 6px 18px rgba(13,71,161,.3);}
+.btn-ghost{background:var(--s2);border:1px solid var(--b2);color:var(--txt2);}
+.btn-ghost:hover{background:var(--s3);color:var(--txt);}
+.btn-sm{padding:7px 13px;font-size:12px;border-radius:8px;}
+.btn-xs{padding:4px 9px;font-size:11px;border-radius:7px;}
+.btn-full{padding:12px;width:100%;}
+.btn-ok{background:rgba(22,163,74,.1);color:var(--ok);border:1px solid rgba(22,163,74,.2);}
+.btn-ok:hover{background:rgba(22,163,74,.18);}
+.btn-warn{background:rgba(217,119,6,.1);color:var(--warn);border:1px solid rgba(217,119,6,.2);}
+.btn-warn:hover{background:rgba(217,119,6,.18);}
+.btn-err{background:rgba(220,38,38,.1);color:var(--err);border:1px solid rgba(220,38,38,.2);}
+.btn-err:hover{background:rgba(220,38,38,.18);}
+
+/* ── EXPORT BAR ── */
+.export-bar{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;}
+.export-bar select,.export-bar input[type="date"]{background:var(--s2);border:1px solid var(--b1);color:var(--txt);border-radius:7px;padding:8px 11px;font-size:12px;}
+.ico-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--b1);background:var(--s2);}
+.ico-btn:hover{background:var(--s3);border-color:var(--b2);}
+
+/* ── FORMS ── */
+.fg{margin-bottom:.875rem;}
+.fg label{font-weight:600;letter-spacing:.05em;font-size:10.5px;color:var(--txt3);}
+.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--b2);color:var(--txt);border-radius:9px;padding:10px 13px;font-size:13px;transition:border-color .2s,box-shadow .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(21,101,192,.55);box-shadow:0 0 0 3px rgba(21,101,192,.09);background:var(--s1);}
+.fg input:disabled{opacity:.55;cursor:not-allowed;}
+.fg select option{background:var(--s1);color:var(--txt);}
+.fg textarea{min-height:70px;resize:vertical;line-height:1.6;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ── REMINDER CARDS ── */
+.reminder-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:.875rem 1rem;margin-bottom:.65rem;box-shadow:0 1px 5px rgba(0,0,0,.04);transition:all .2s;display:flex;gap:1rem;}
+.reminder-card:hover{border-color:rgba(21,101,192,.18);box-shadow:0 4px 14px rgba(0,0,0,.08);transform:translateY(-1px);}
+.reminder-card.esc{border-left:3px solid var(--err);}
+.reminder-card.done-card{opacity:.55;}
+.reminder-title{font-size:14px;font-family:'Syne',sans-serif;font-weight:600;margin-bottom:4px;}
+.reminder-desc{font-size:12px;color:var(--txt2);line-height:1.55;margin-bottom:8px;}
+.reminder-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;align-items:center;}
+.reminder-thumb{width:76px;height:76px;border-radius:10px;border:1px solid var(--b1);flex-shrink:0;object-fit:cover;cursor:pointer;transition:transform .2s;}
+.reminder-thumb:hover{transform:scale(1.04);}
+.reply-area{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
+.reply-area input{flex:1;background:var(--s2);border:1px solid var(--b2);color:var(--txt);border-radius:9px;padding:9px 13px;font-size:13px;min-width:130px;}
+.reply-area input:focus{border-color:rgba(21,101,192,.5);outline:none;}
+
+/* ── PENALTY CARDS ── */
+.pen-item{background:var(--s1);border:1px solid var(--b1);border-left:3px solid var(--err);border-radius:var(--r2);padding:.875rem 1rem;margin-bottom:.6rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:space-between;}
+.pen-item:hover{background:var(--s2);transform:translateX(2px);}
+
+/* ── OVERLAYS & MODALS ── */
+.overlay{background:rgba(0,0,0,.45);backdrop-filter:blur(4px);}
+.modal{background:var(--s1);border:1px solid var(--b2);border-radius:18px;padding:1.75rem;box-shadow:0 20px 50px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:17px;margin-bottom:1.25rem;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;flex-wrap:wrap;}
+.notif-preview{background:var(--s2);border:1px solid var(--b1);border-radius:9px;padding:1rem;font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:1rem;font-family:'DM Mono',monospace;white-space:pre-wrap;}
+.mf{margin-bottom:.6rem;}.mf-l{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--txt3);margin-bottom:3px;}.mf-v{font-size:13px;color:var(--txt);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:72px;right:16px;background:var(--s1);border:1px solid var(--b2);border-radius:11px;padding:12px 18px;font-size:13px;color:var(--txt);z-index:9999;opacity:0;transform:translateY(6px);transition:all .25s;display:flex;align-items:center;gap:10px;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,.14);}
+.toast.on{opacity:1;transform:translateY(0);}
+
+/* ── MISC ── */
+.sheet-pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt3);padding:5px 10px;background:var(--s2);border:1px solid var(--b1);border-radius:20px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:blink 2s infinite;}.dot.off{background:var(--txt3);animation:none;}
+.file-drop{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px dashed var(--b2);border-radius:9px;padding:11px 13px;cursor:pointer;font-size:13px;color:var(--txt2);transition:border-color .2s;}
+.file-drop:hover{border-color:rgba(21,101,192,.5);background:rgba(21,101,192,.04);}
+.sg h4{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:.875rem;padding-bottom:.5rem;border-bottom:1px solid var(--b1);}
+.sg{margin-bottom:1.5rem;}.settings-note{font-size:11.5px;color:var(--txt3);line-height:1.7;margin:.4rem 0 .875rem;}
+.notif-log{font-size:12.5px;background:var(--s2);border-radius:var(--r);padding:.875rem;}
+.nl-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--b1);align-items:flex-start;}
+.nl-item:last-child{border-bottom:none;}.nl-ico{font-size:13px;flex-shrink:0;margin-top:2px;}.nl-text{flex:1;color:var(--txt2);}
+.sync-status{font-size:11px;padding:4px 10px;border-radius:20px;font-family:'DM Mono',monospace;}
+.sync-ok{background:rgba(22,163,74,.1);color:var(--ok);border:1px solid rgba(22,163,74,.2);}
+.sync-err{background:rgba(220,38,38,.1);color:var(--err);border:1px solid rgba(220,38,38,.2);}
+.admin-only-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;background:rgba(99,102,241,.12);color:#a5b4fc;border:1px solid rgba(99,102,241,.22);border-radius:20px;padding:3px 8px;}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:500;}
+.b-pending{background:rgba(217,119,6,.12);color:var(--warn);}
+.b-done{background:rgba(22,163,74,.12);color:var(--ok);}
+.b-esc{background:rgba(220,38,38,.12);color:var(--err);}
+.b-info{background:rgba(21,101,192,.12);color:var(--acc);}
+.b-auto{background:rgba(99,102,241,.12);color:#a5b4fc;}
+.rem-pip{display:inline-flex;align-items:center;gap:4px;font-size:11px;background:var(--s3);border:1px solid var(--b1);border-radius:20px;padding:3px 9px;font-family:'DM Mono',monospace;color:var(--txt2);}
+.rem-pip.hot{border-color:rgba(220,38,38,.3);color:var(--err);}
+hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
+
+/* ── CHAT WIDGET ── */
+.chat-widget{position:fixed;bottom:72px;right:16px;width:330px;height:460px;background:var(--s1);border:1px solid var(--b2);border-radius:16px;box-shadow:0 12px 36px rgba(0,0,0,.14);display:none;flex-direction:column;z-index:9999;overflow:hidden;}
+.chat-widget.show{display:flex;animation:slideUp .3s ease;}
+.cw-header{background:var(--sb-bg);border-bottom:1px solid var(--sb-border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
+.cw-title{font-weight:600;font-size:13px;color:#fff!important;}
+.cw-sub{font-size:10px;color:var(--sb-txt2)!important;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.cw-header>button{background:none;border:none;color:var(--sb-txt)!important;cursor:pointer;font-size:16px;width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.cw-header>button:hover{color:var(--err)!important;}
+.cw-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg);}
+.cw-footer{padding:12px;background:var(--s2);border-top:1px solid var(--b1);display:flex;gap:7px;}
+.cw-footer input{flex:1;background:var(--s1);border:1px solid var(--b1);border-radius:20px;padding:9px 15px;color:var(--txt);font-size:12.5px;outline:none;}
+.cw-footer input:focus{border-color:var(--acc);}
+.cw-footer button{background:var(--acc);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+.cw-footer button:hover{transform:scale(1.08);}
+.chat-msg{max-width:85%;display:flex;flex-direction:column;}
+.chat-msg.me{align-self:flex-end;}.chat-msg.other{align-self:flex-start;}
+.chat-msg .name{font-size:9px;color:var(--txt3);margin-bottom:3px;}
+.chat-msg.me .name{text-align:right;}
+.chat-msg .bubble{padding:8px 12px;border-radius:10px;font-size:12.5px;word-break:break-word;line-height:1.5;}
+.chat-msg.me .bubble{background:var(--acc);color:#fff;border-bottom-right-radius:3px;}
+.chat-msg.other .bubble{background:var(--s3);border:1px solid var(--b1);color:var(--txt);border-bottom-left-radius:3px;}
+.chat-msg .time{font-size:9px;color:var(--txt3);margin-top:3px;}
+.chat-msg.me .time{text-align:right;}
+.cw-add-user-btn{background:var(--acc);color:#fff;border:none;font-size:9px;padding:3px 8px;border-radius:12px;cursor:pointer;}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;padding:.75rem 0 .25rem;}
+.pg-btn{min-width:30px;height:30px;padding:0 8px;border:1px solid var(--b2);background:var(--s1);color:var(--txt2);border-radius:8px;font-size:12px;font-family:'DM Mono',monospace;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;}
+.pg-btn:hover:not(:disabled){background:var(--s3);border-color:rgba(21,101,192,.3);color:var(--acc);}
+.pg-btn.pg-active{background:var(--acc);color:#fff;border-color:var(--acc);}
+.pg-btn:disabled{opacity:.35;cursor:not-allowed;}
+.pg-ellipsis{color:var(--txt3);padding:0 3px;font-size:12px;line-height:30px;}
+.pg-info{font-size:10.5px;color:var(--txt3);margin-left:6px;font-family:'DM Mono',monospace;white-space:nowrap;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:2.5rem 1rem;color:var(--txt3);}
+.empty-state .es-icon{font-size:36px;margin-bottom:.6rem;opacity:.6;}
+.empty-state .es-title{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:4px;}
+.empty-state .es-sub{font-size:12px;}
+
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:58px;background:var(--sb-bg);border-top:1px solid var(--sb-border);z-index:200;padding:0 6px;padding-bottom:env(safe-area-inset-bottom);}
+.mbn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--sb-txt2);cursor:pointer;padding:5px 2px;border-radius:8px;transition:all .18s;position:relative;}
+.mbn-item.active{color:#fff;}
+.mbn-item.active .mbn-icon-wrap::after{content:'';position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:18px;height:2px;background:var(--sb-accent);border-radius:2px;}
+.mbn-icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+.mbn-icon{font-size:16px;line-height:1;}
+.mbn-label{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.mbn-badge{position:absolute;top:-4px;right:-6px;background:var(--err);color:#fff;font-size:8px;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;padding:0 3px;}
+.img-overlay{background:rgba(0,0,0,.88);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){.sidebar{width:200px;}.main{margin-left:200px!important;padding:1.25rem 1.5rem;}}
+@media(max-width:768px){
+  .sidebar{display:none!important;}
+  .mobile-bottom-nav{display:flex;}
+  .mobile-topbar{display:flex!important;}
+  .main{margin-left:0!important;padding:.875rem .875rem calc(60px + .875rem);}
+  .toast{bottom:68px;right:12px;max-width:calc(100vw - 24px);}
+  .chat-widget{width:calc(100vw - 20px);right:10px;height:400px;bottom:68px;}
+  .stats{grid-template-columns:1fr 1fr;gap:.65rem;}
+  .stat{padding:.875rem .875rem;}.stat .s-val{font-size:24px;}
+  .card{padding:.875rem;border-radius:12px;}
+  .row2{grid-template-columns:1fr;gap:0;}
+  .export-bar{flex-direction:column;align-items:stretch;gap:7px;}
+  .export-bar select,.export-bar input[type="date"]{width:100%;}
+  .export-bar .sep{display:none;}
+  .modal{width:96vw;padding:1.1rem;border-radius:16px;max-height:88vh;}
+  .reminder-card{flex-direction:column;gap:.65rem;padding:.875rem;}
+  .reminder-thumb{width:100%;height:160px;border-radius:10px;}
+  .reply-area{flex-direction:column;}
+  .reply-area button{justify-content:center;}
+  .ph{flex-direction:column;gap:.5rem;align-items:flex-start;}
+  .ph-right{justify-content:flex-start;}
+  .ph-left h2{font-size:17px;}
+  th,td{padding:8px 10px;font-size:12px;}
+  .admin-export-btns.hidden{display:none!important;}
+}
+@media(max-width:480px){
+  .main{padding:.75rem .75rem calc(60px + .75rem);}
+  .stats{grid-template-columns:1fr 1fr;}
+  .modal{width:99vw;padding:1rem;border-radius:14px;}
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"]{
+  --bg:#070b17;--s1:rgba(12,20,40,.97);--s2:rgba(18,28,52,.95);--s3:rgba(26,40,70,.92);--s4:rgba(38,55,90,.9);
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.11);--b3:rgba(255,255,255,.19);
+  --txt:#e2e8f0;--txt2:#8fa5c8;--txt3:#5f7a9e;--acc:#4a90d9;--acc2:#3b6fba;
+  --ok:#22c55e;--warn:#f59e0b;--err:#ef4444;
+}
+[data-theme="dark"] body{background:var(--bg);}
+[data-theme="dark"] .fg input,[data-theme="dark"] .fg select,[data-theme="dark"] .fg textarea{background:var(--s2);border-color:var(--b1);color:var(--txt);}
+[data-theme="dark"] th{background:rgba(255,255,255,.05);}
+[data-theme="dark"] tr:hover td{background:rgba(255,255,255,.03);}
+[data-theme="dark"] .export-bar select,[data-theme="dark"] .export-bar input[type="date"]{background:var(--s3);color:var(--txt);}
+[data-theme="dark"] .pg-btn{background:var(--s2);border-color:var(--b2);color:var(--txt2);}
+[data-theme="dark"] .btn-ghost{background:var(--s3);border-color:var(--b2);color:var(--txt2);}
+</style>
   --s1:   #ffffff;
   --s2:   #f4f7fb;
   --s3:   #e4eaf4;
@@ -845,7 +1097,33 @@ tr:hover td{background:#f8fafd;}
     </div>
   </div>
 
-</div></div></div>
+</div></div>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav">
+  <div class="mbn-item active" id="mbn-dashboard" onclick="showSec('dashboard')">
+    <div class="mbn-icon-wrap"><span class="mbn-icon">▦</span></div>
+    <span class="mbn-label">Home</span>
+  </div>
+  <div class="mbn-item" id="mbn-reminders" onclick="showSec('reminders')">
+    <div class="mbn-icon-wrap"><span class="mbn-icon">✓</span></div>
+    <span class="mbn-label">Tasks</span>
+  </div>
+  <div class="mbn-item" id="mbn-cards" onclick="showSec('cards')">
+    <div class="mbn-icon-wrap"><span class="mbn-icon">⚠</span><span class="mbn-badge hidden" id="mbnCardBadge">0</span></div>
+    <span class="mbn-label">Cards</span>
+  </div>
+  <div class="mbn-item admin-mbn hidden" id="mbn-employees" onclick="showSec('employees')">
+    <div class="mbn-icon-wrap"><span class="mbn-icon">👥</span></div>
+    <span class="mbn-label">Team</span>
+  </div>
+  <div class="mbn-item" id="mbn-profile" onclick="showSec('profile')">
+    <div class="mbn-icon-wrap"><span class="mbn-icon">👤</span></div>
+    <span class="mbn-label">Profile</span>
+  </div>
+</nav>
+
+</div>
 
 <div class="chat-widget" id="chatWidget">
   <div class="cw-header">
@@ -1007,6 +1285,11 @@ let reminders = [];
 let cards     = [];
 let notifLog  = [];
 let waConfigs = [];
+
+const PAGE_SIZE = 10;
+let reminderPage = 1;
+let cardPage     = 1;
+let empPage      = 1;
 
 // Session — persisted across page refreshes
 let sessionToken = sessionStorage.getItem('reminderToken') || '';
@@ -1482,6 +1765,8 @@ function initApp(){
       
       const adminBtns = document.querySelectorAll(".admin-export-btns");
       for(let i=0; i<adminBtns.length; i++) adminBtns[i].classList.remove("hidden");
+      // Show admin items in mobile bottom nav
+      document.querySelectorAll(".admin-mbn").forEach(function(el){ el.classList.remove("hidden"); });
     } else {
       const adminNavs = ["nav-employees","nav-notifications","nav-settings"];
       for(let i=0; i<adminNavs.length; i++) {
@@ -1524,23 +1809,26 @@ function logout(){
   document.getElementById("appPage").style.display = "none";
 }
 
-function showSec(id){ 
-  const sps = document.querySelectorAll(".sp");
-  for(let i=0; i<sps.length; i++) sps[i].classList.remove("on");
-  
-  const navs = document.querySelectorAll(".nav-item");
-  for(let i=0; i<navs.length; i++) navs[i].classList.remove("active");
-  
-  document.getElementById("sec-"+id).classList.add("on"); 
-  const ni = document.getElementById("nav-"+id); 
-  if(ni) ni.classList.add("active"); 
-  
-  if(window.innerWidth <= 768) {
-      document.querySelector('.sidebar').classList.remove('open');
-      document.getElementById('mobileOverlay').classList.remove('on');
+function showSec(id){
+  document.querySelectorAll(".sp").forEach(function(s){ s.classList.remove("on"); });
+  document.querySelectorAll(".nav-item").forEach(function(n){ n.classList.remove("active"); });
+  document.querySelectorAll(".mbn-item").forEach(function(n){ n.classList.remove("active"); });
+
+  var sec = document.getElementById("sec-"+id);
+  if(sec) sec.classList.add("on");
+  var ni = document.getElementById("nav-"+id);
+  if(ni) ni.classList.add("active");
+  var mni = document.getElementById("mbn-"+id);
+  if(mni) mni.classList.add("active");
+
+  if(window.innerWidth <= 768){
+    var sb = document.querySelector('.sidebar');
+    if(sb) sb.classList.remove('open');
+    var ov = document.getElementById('mobileOverlay');
+    if(ov) ov.classList.remove('on');
+    window.scrollTo({top:0, behavior:'smooth'});
   }
-  
-  refreshAll(); 
+  refreshAll();
 }
 
 /* ══════════════════════════════════════════════
@@ -1901,35 +2189,69 @@ function loadEmpSelect(){
 
 function renderEmpTable(){
   const wrap = document.getElementById("empTableWrap");
-  if(!employees.length){ wrap.innerHTML = `<p style="text-align:center;padding:2rem;">No employees added yet.</p>`; return; }
-  
-  let html = `<table><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Role</th><th>Phone</th><th>Email</th><th>Username</th><th>Reminders</th><th style="min-width:280px;">Actions</th></tr></thead><tbody>`;
-  
-  for(let i=0; i<employees.length; i++) {
-      const e = employees[i];
-      const tCount = reminders.filter(function(t) { return t.emp === e.user; }).length;
-      html += `<tr><td><span class="rem-pip">${e.id}</span></td>
+  if(!employees.length){
+    wrap.innerHTML='<div class="empty-state"><div class="es-icon">👥</div><div class="es-title">No employees yet</div><div class="es-sub">Add employees below or fetch from CRM.</div></div>';
+    return;
+  }
+
+  const totalPages = Math.ceil(employees.length / PAGE_SIZE);
+  empPage = Math.max(1, Math.min(empPage, totalPages));
+  const eStart = (empPage-1)*PAGE_SIZE;
+  const eItems = employees.slice(eStart, eStart+PAGE_SIZE);
+  const isMobile = window.innerWidth < 769;
+
+  if(isMobile){
+    // Mobile: compact cards
+    let html = '';
+    eItems.forEach(function(e){
+      const tCount = reminders.filter(function(t){ return t.emp===e.user; }).length;
+      html += `<div class="card" style="margin-bottom:.65rem;padding:.875rem;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:.5rem;">
+          <div class="avatar av-emp" style="width:36px;height:36px;font-size:12px;">${e.name.slice(0,2).toUpperCase()}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:600;font-size:13px;">${e.name}</div>
+            <div style="font-size:11px;color:var(--txt3);font-family:'DM Mono',monospace;">${e.id}</div>
+          </div>
+          <span class="badge b-info">${tCount} tasks</span>
+        </div>
+        <div style="font-size:11px;color:var(--txt3);display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.6rem;">
+          <span>${e.department||'—'}</span> · <span>${e.role||'—'}</span> · <span style="font-family:'DM Mono',monospace;">${e.phone}</span>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-xs" onclick="openEditEmpModal('${e.user}')">✏️ Edit</button>
+          <button class="btn btn-ghost btn-xs" onclick="toggleRights('${e.user}')">${e.canAssign?'✕ Revoke':'✓ Grant'}</button>
+          <button class="btn btn-warn btn-xs" onclick="adminResetPassword('${e.user}')">🔑</button>
+          <button class="btn btn-err btn-xs" onclick="deleteEmployee('${e.user}')">🗑️</button>
+        </div>
+      </div>`;
+    });
+    html += renderPagination(employees.length, empPage, 'setEmpPage');
+    wrap.innerHTML = html;
+  } else {
+    let html = `<table><thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Role</th><th>Phone</th><th>Email</th><th>Login</th><th>Tasks</th><th>Actions</th></tr></thead><tbody>`;
+    eItems.forEach(function(e){
+      const tCount = reminders.filter(function(t){ return t.emp===e.user; }).length;
+      html += `<tr>
+        <td><span class="rem-pip">${e.id}</span></td>
         <td><strong>${e.name}</strong></td>
-        <td>${e.department || '-'}</td>
-        <td>${e.role || '-'}</td>
-        <td style="font-family:'DM Mono',monospace;font-size:12px;">${e.phone}</td><td style="font-size:12px;color:var(--txt2);">${e.email}</td>
-        <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--txt3);">${e.user}</td><td><span class="badge b-info">${tCount}</span></td>
-        <td>
-          <button class="btn btn-ghost btn-xs" onclick="openEditEmpModal('${e.user}')" title="Edit Employee">✏️ Edit</button>
-          <button class="btn btn-ghost btn-xs" onclick="toggleRights('${e.user}')" style="margin-left:4px;">
-            ${e.canAssign ? '✕ Revoke' : '✓ Grant Rights'}
-          </button>
-          <button class="btn btn-warn btn-xs" onclick="adminResetPassword('${e.user}')" style="margin-left:4px; padding:4px 7px;" title="Reset Password">
-            🔑 Reset
-          </button>
-          <button class="btn btn-err btn-xs" onclick="deleteEmployee('${e.user}')" style="margin-left:4px; padding:4px 7px;" title="Delete Employee">
-            🗑️ Delete
-          </button>
+        <td>${e.department||'—'}</td>
+        <td>${e.role||'—'}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:11px;">${e.phone}</td>
+        <td style="font-size:11px;color:var(--txt2);">${e.email}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt3);">${e.user}</td>
+        <td><span class="badge b-info">${tCount}</span></td>
+        <td style="white-space:nowrap;">
+          <button class="btn btn-ghost btn-xs" onclick="openEditEmpModal('${e.user}')">✏️</button>
+          <button class="btn btn-ghost btn-xs" onclick="toggleRights('${e.user}')" style="margin-left:3px;">${e.canAssign?'✕ Revoke':'✓ Grant'}</button>
+          <button class="btn btn-warn btn-xs" onclick="adminResetPassword('${e.user}')" style="margin-left:3px;">🔑</button>
+          <button class="btn btn-err btn-xs" onclick="deleteEmployee('${e.user}')" style="margin-left:3px;">🗑️</button>
         </td>
       </tr>`;
+    });
+    html += `</tbody></table>`;
+    html += renderPagination(employees.length, empPage, 'setEmpPage');
+    wrap.innerHTML = html;
   }
-  html += `</tbody></table>`;
-  wrap.innerHTML = html;
 }
 
 /* ══════════════════════════════════════════════
@@ -2519,96 +2841,87 @@ function getBadgeClass(s){ return s==="Completed" ? "b-done" : (s==="Escalated" 
 function renderReminders(){
   const wrap = document.getElementById("reminderListWrap");
   const list = getFilteredData('reminder');
-  
-  if(!list.length){ wrap.innerHTML=`<div style="text-align:center;padding:4rem;color:var(--txt3);">No reminders found for selected period.</div>`; return; }
 
-  if(currentRole==="admin"){
-    let html = `<div class="card"><div class="tbl-wrap"><table>
-      <thead><tr><th>Employee</th><th>Reminder</th><th>Schedule / Deadline</th><th>Sent</th><th>Status</th><th style="min-width:210px;">Action</th></tr></thead>
+  if(!list.length){
+    wrap.innerHTML='<div class="empty-state"><div class="es-icon">📋</div><div class="es-title">No reminders found</div><div class="es-sub">No reminders match the selected filter period.</div></div>';
+    return;
+  }
+
+  const totalPages = Math.ceil(list.length / PAGE_SIZE);
+  reminderPage = Math.max(1, Math.min(reminderPage, totalPages));
+  const start = (reminderPage-1)*PAGE_SIZE;
+  const items = list.slice(start, start+PAGE_SIZE);
+  const isMobile = window.innerWidth < 769;
+
+  if(currentRole==="admin" && !isMobile){
+    let html = `<div class="card" style="padding:0;overflow:hidden;"><div class="tbl-wrap"><table>
+      <thead><tr><th>Employee</th><th>Reminder</th><th>Schedule / Deadline</th><th>Sent</th><th>Status</th><th style="min-width:220px;">Action</th></tr></thead>
       <tbody>`;
-    for(let i=0; i<list.length; i++) {
-        const t = list[i];
-        const st = getStatus(t); 
-        const remCount = t.reminder ? t.reminder : 0;
-        const hot = remCount >= 2;
+    for(let i=0; i<items.length; i++) {
+        const t = items[i]; const absIdx = start+i;
+        const st = getStatus(t); const remCount = t.reminder||0; const hot = remCount>=2;
         const ri = reminders.indexOf(t);
-        
+        const dueStr = t.deadline ? new Date(t.deadline).toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) + ' ' + new Date(t.deadline).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) : '';
+        const notifProg = (t.notifySchedule && t.notifySchedule.length) ? `<span style="font-size:10px;color:var(--txt3);">${(t.notifiedHours||[]).length}/${t.notifySchedule.length} sent</span>` : '';
         html += `<tr>
-          <td><strong>${t.empName ? t.empName : ""}</strong><div style="font-size:11px;color:var(--txt3);">${t.empId ? t.empId : "—"}</div>
-            ${t.prevEmpName ? `<div style="font-size:10px;color:var(--warn);margin-top:4px;">Prev: ${t.prevEmpName}</div>` : ''}
-          </td>
-          <td><strong>${t.title}</strong><div style="font-size:11px;color:var(--txt3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.desc}</div>
-            ${t.waGroup ? `<span class="badge b-info" style="font-size:9px;margin-top:4px;">WA: ${t.waGroup}</span>` : ''}
-          </td>
-          <td>${t.totalDuration > 0
-            ? `<span class="badge b-auto">⏱ ${t.totalDuration}h total</span>${t.deadline ? `<div style="font-size:10px;color:var(--txt3);margin-top:3px;">Due: ${new Date(t.deadline).toLocaleDateString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>` : ''}`
-            : (t.autoInterval > 0 ? `<span class="badge b-auto">⏱ ${t.autoInterval}h interval</span>` : `<span style="font-size:11px;color:var(--txt3);">Manual</span>`)
-          }</td>
-          <td><span class="rem-pip ${hot?"hot":""}">${remCount}</span><div style="font-size:10px;color:var(--txt3);margin-top:3px;">${t.notifiedHours && t.notifySchedule && t.notifySchedule.length ? t.notifiedHours.length+'/'+t.notifySchedule.length+' notifs' : ''}</div> ${getCountdownHTML(t)}</td>
+          <td><strong>${t.empName||''}</strong><div style="font-size:10px;color:var(--txt3);">${t.empId||'—'}</div>${t.prevEmpName?`<div style="font-size:9px;color:var(--warn);">↩ ${t.prevEmpName}</div>`:''}</td>
+          <td><div style="font-weight:600;font-size:13px;">${t.title}</div><div style="font-size:11px;color:var(--txt3);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.desc}</div>${t.waGroup?`<span class="badge b-info" style="font-size:9px;margin-top:3px;">WA: ${t.waGroup}</span>`:''}</td>
+          <td>${t.totalDuration>0?`<span class="badge b-auto">⏱ ${t.totalDuration}h</span>${dueStr?`<div style="font-size:10px;color:var(--txt3);margin-top:2px;">Due: ${dueStr}</div>`:''}`:t.autoInterval>0?`<span class="badge b-auto">⏱ ${t.autoInterval}h loop</span>`:`<span style="font-size:11px;color:var(--txt3);">Manual</span>`}</td>
+          <td><span class="rem-pip ${hot?'hot':''}">${remCount}</span> ${notifProg} ${getCountdownHTML(t)}</td>
           <td><span class="badge ${getBadgeClass(st)}">${st}</span></td>
-          <td>${!t.done ? `
-              <button class="btn btn-warn btn-xs" onclick="openReminder(${i})">🔔 Remind</button>
-              <button class="btn btn-ghost btn-xs" style="margin-left:4px; padding:4px 7px;" onclick="openReassign(${i})" title="Reassign Reminder">🔄</button>
-              <button class="btn btn-ghost btn-xs" style="margin-left:4px; padding:4px 7px;" onclick="openEditReminder(${i})" title="Edit Reminder">✏️</button>
-              <button class="btn btn-ok btn-xs" style="margin-left:4px; padding:4px 7px;" onclick="markDone(${ri})" title="Mark Complete">✓</button>
-              <button class="btn btn-err btn-xs" style="margin-left:4px; padding:4px 7px;" onclick="deleteReminder(${ri})" title="Delete Reminder">🗑️</button>
-              <button class="btn btn-ghost btn-xs" style="margin-left:4px;" onclick="openChat(${i})">💬 Chat (${t.replies ? t.replies.length : 0})</button>
-            ` : `<span style="font-size:11px;color:var(--ok);">✓ Done</span> 
-                 <button class="btn btn-err btn-xs" style="margin-left:4px; padding:4px 7px;" onclick="deleteReminder(${ri})" title="Delete Reminder">🗑️</button>
-                 <button class="btn btn-ghost btn-xs" style="margin-left:4px;" onclick="openChat(${i})">💬 Chat</button>`}
-          </td>
+          <td style="white-space:nowrap;">${!t.done?`
+            <button class="btn btn-warn btn-xs" onclick="openReminder(${absIdx})">🔔</button>
+            <button class="btn btn-ghost btn-xs" onclick="openReassign(${absIdx})" title="Reassign">🔄</button>
+            <button class="btn btn-ghost btn-xs" onclick="openEditReminder(${absIdx})" title="Edit">✏️</button>
+            <button class="btn btn-ok btn-xs" onclick="markDone(${ri})" title="Done">✓</button>
+            <button class="btn btn-err btn-xs" onclick="deleteReminder(${ri})" title="Delete">🗑️</button>
+            <button class="btn btn-ghost btn-xs" onclick="openChat(${absIdx})">💬 ${t.replies?t.replies.length:0}</button>
+          `:`<span style="font-size:11px;color:var(--ok);">✓ Done</span>
+            <button class="btn btn-err btn-xs" style="margin-left:4px;" onclick="deleteReminder(${ri})">🗑️</button>
+            <button class="btn btn-ghost btn-xs" style="margin-left:4px;" onclick="openChat(${absIdx})">💬</button>`}</td>
         </tr>`;
     }
-    html += `</tbody></table></div></div>`;
+    html += `</tbody></table></div><div style="padding:.5rem 1.25rem 1rem;">${renderPagination(list.length, reminderPage, 'setReminderPage')}</div></div>`;
     wrap.innerHTML = html;
   } else {
+    // Card view (mobile or employee)
     let html = "";
-    for(let i=0; i<list.length; i++) {
-      const t = list[i];
+    for(let i=0; i<items.length; i++) {
+      const t = items[i]; const absIdx = start+i;
       const ri = reminders.indexOf(t);
-      const st = getStatus(t); 
-      const replies = t.replies ? t.replies : [];
+      const st = getStatus(t); const remCount = t.reminder||0;
       const isMine = t.emp === currentUser;
       const isAssignedByMe = t.assignedBy === currentUser && !isMine;
       const isShared = t.sharedWith && t.sharedWith.includes(currentUser);
-      const remCount = t.reminder ? t.reminder : 0;
-
-      let repliesHtml = "";
-      if(replies.length > 0) {
-          repliesHtml = `<div class="replies-list">`;
-          for(let j=0; j<replies.length; j++) {
-              const r = replies[j];
-              const text = r.text ? r.text : (typeof r === 'string' ? r : '');
-              const sender = r.sender ? r.sender : (typeof r === 'string' ? (t.empName ? t.empName : "") : 'System');
-              const timeStr = r.ts ? new Date(r.ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}) : '';
-              const isMe = (r.senderId === currentUser);
-              repliesHtml += `<div class="reply-item ${isMe?'me':''}"><strong>${sender}:</strong> ${text}<span class="reply-time" style="margin-left:6px;font-size:9px;">${timeStr}</span></div>`;
-          }
-          repliesHtml += `</div>`;
-      }
+      const isAdminCard = currentRole === "admin";
+      const dueStr = t.deadline ? `<span class="badge" style="background:rgba(217,119,6,.1);color:var(--warn);font-size:9px;">⏰ ${new Date(t.deadline).toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}</span>` : '';
+      const notifProg = (t.totalDuration>0 && t.notifySchedule && t.notifySchedule.length) ? `<span class="rem-pip" style="font-size:10px;">${(t.notifiedHours||[]).length}/${t.notifySchedule.length} notifs</span>` : '';
 
       html += `<div class="reminder-card ${st==="Escalated"?"esc":""} ${t.done?"done-card":""}">
-        ${t.img ? `<img class="reminder-thumb" src="${t.img}" onclick="openImageModal('${t.img}')" style="cursor:pointer;" title="Click to enlarge">` : ""}
-        <div class="reminder-body">
-          <div class="reminder-title">
-            ${t.title} 
-            ${isAssignedByMe ? `<span class="badge b-info" style="font-size:9px;margin-left:6px;">Assigned to: ${t.empName}</span>` : ""}
-            ${isShared ? `<span class="badge b-auto" style="font-size:9px;margin-left:6px;">Shared with you</span>` : ""}
-            ${t.prevEmpName ? `<span class="badge b-warn" style="font-size:9px;margin-left:6px;">Prev Assignee: ${t.prevEmpName}</span>` : ""}
-            ${t.waGroup ? `<span class="badge b-auto" style="font-size:9px;margin-left:6px;">WA: ${t.waGroup}</span>` : ""}
+        ${t.img?`<img class="reminder-thumb" src="${t.img}" onclick="openImageModal('${t.img}')" title="Click to enlarge">`:``}
+        <div class="reminder-body" style="flex:1;min-width:0;">
+          <div class="reminder-title" style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <span>${t.title}${isAdminCard?`<span style="font-size:11px;color:var(--txt3);display:block;font-family:normal;font-weight:400;">${t.empName||''} · ${t.empId||''}</span>`:''}</span>
+            <span class="badge ${getBadgeClass(st)}" style="flex-shrink:0;">${st}</span>
           </div>
           <div class="reminder-desc">${t.desc}</div>
-          <div class="reminder-meta"><span class="badge ${getBadgeClass(st)}">${st}</span><span class="rem-pip ${remCount>=2?"hot":""}">🔔 ${remCount} reminder${remCount!==1?"s":""}</span> ${getCountdownHTML(t)}</div>
-          
-          ${!t.done ? `<div class="reply-area">
-            ${isMine ? 
-              `<button class="btn btn-ghost btn-sm" onclick="openChat(${i})">💬 Chat</button><button class="btn btn-ok btn-sm" onclick="markDone(${ri})">✓ Done</button>` 
-              : `<button class="btn btn-ghost btn-sm" onclick="openChat(${i})">💬 Chat</button>
-                 ${isAssignedByMe ? `<button class="btn btn-warn btn-sm" onclick="openReminder(${i})">🔔 Remind ${t.empName ? t.empName : ""}</button>` : ""}`
-            }
-          </div>` : `<div style="font-size:12px;color:var(--ok);margin-top:8px;">✓ Marked as completed</div>`}
+          <div class="reminder-meta">
+            <span class="rem-pip ${remCount>=2?'hot':''}">🔔 ${remCount}</span>
+            ${dueStr} ${notifProg}
+            ${t.waGroup?`<span class="badge b-info" style="font-size:9px;">WA: ${t.waGroup}</span>`:''}
+            ${t.prevEmpName?`<span class="badge b-warn" style="font-size:9px;">↩ ${t.prevEmpName}</span>`:''}
+            ${isShared?`<span class="badge b-auto" style="font-size:9px;">Shared</span>`:''}
+            ${getCountdownHTML(t)}
+          </div>
+          ${!t.done?`<div class="reply-area">
+            <button class="btn btn-ghost btn-sm" onclick="openChat(${absIdx})">💬 Chat${t.replies&&t.replies.length?` (${t.replies.length})`:''}  </button>
+            ${isMine||isAdminCard?`<button class="btn btn-ok btn-sm" onclick="markDone(${ri})">✓ Done</button>`:''}
+            ${(isAdminCard||isAssignedByMe)?`<button class="btn btn-warn btn-sm" onclick="openReminder(${absIdx})">🔔 Remind</button>`:''}
+            ${isAdminCard?`<button class="btn btn-ghost btn-sm" onclick="openReassign(${absIdx})">🔄</button><button class="btn btn-ghost btn-sm" onclick="openEditReminder(${absIdx})">✏️</button><button class="btn btn-err btn-sm" onclick="deleteReminder(${ri})">🗑️</button>`:''}
+          </div>`:`<div style="font-size:11px;color:var(--ok);margin-top:6px;font-weight:500;">✓ Completed${isAdminCard?`<button class="btn btn-err btn-xs" style="margin-left:8px;" onclick="deleteReminder(${ri})">🗑️</button>`:''}  </div>`}
         </div></div>`;
     }
+    html += renderPagination(list.length, reminderPage, 'setReminderPage');
     wrap.innerHTML = html;
   }
   updateCountdowns();
@@ -2645,26 +2958,75 @@ function deleteReminder(i){
   showToast("Reminder deleted successfully","ok");
 }
 
+/* ══════════════════════════════════════════════
+   PAGINATION
+══════════════════════════════════════════════ */
+function renderPagination(total, current, setFn, prefix) {
+  if (total <= PAGE_SIZE) return '';
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  const start = (current - 1) * PAGE_SIZE + 1;
+  const end   = Math.min(current * PAGE_SIZE, total);
+  let html = '<div class="pagination">';
+  html += '<button class="pg-btn" ' + (current===1?'disabled':'onclick="'+setFn+'('+( current-1)+')"') + '>‹</button>';
+  for (let p = 1; p <= totalPages; p++) {
+    if (p===1 || p===totalPages || (p>=current-1 && p<=current+1)) {
+      html += '<button class="pg-btn' + (p===current?' pg-active':'') + '" onclick="'+setFn+'('+p+')">' + p + '</button>';
+    } else if (p===current-2 || p===current+2) {
+      html += '<span class="pg-ellipsis">…</span>';
+    }
+  }
+  html += '<button class="pg-btn" ' + (current===totalPages?'disabled':'onclick="'+setFn+'('+(current+1)+')"') + '>›</button>';
+  html += '<span class="pg-info">' + start + '–' + end + ' / ' + total + '</span>';
+  html += '</div>';
+  return html;
+}
+function setReminderPage(p){ reminderPage=p; renderReminders(); window.scrollTo({top:0,behavior:'smooth'}); }
+function setCardPage(p)    { cardPage=p;     renderCards();     window.scrollTo({top:0,behavior:'smooth'}); }
+function setEmpPage(p)     { empPage=p;      renderEmpTable();  window.scrollTo({top:0,behavior:'smooth'}); }
+
 function updateCardBadge(){
-  const b = document.getElementById("cardBadge");
+  const b  = document.getElementById("cardBadge");
+  const mb = document.getElementById("mbnCardBadge");
   const list = getFilteredData('card');
-  if(list.length){ b.textContent=list.length; b.classList.remove("hidden"); } else b.classList.add("hidden");
+  const n = list.length;
+  if(b){  if(n){ b.textContent=n;  b.classList.remove("hidden");  } else b.classList.add("hidden");  }
+  if(mb){ if(n){ mb.textContent=n; mb.classList.remove("hidden"); } else mb.classList.add("hidden"); }
 }
 
 function renderCards(){
   const wrap = document.getElementById("cardListWrap");
   const list = getFilteredData('card');
-  
-  if(!list.length){ wrap.innerHTML=`<div style="text-align:center;padding:4rem;color:var(--txt3);">No penalty cards found for selected period.</div>`; updateCardBadge(); return; }
-  
-  let html = "";
-  for(let i=0; i<list.length; i++) {
-      const c = list[i];
-      html += `<div class="pen-item" onclick='showPenModal(${i})'>
-        <div><div style="font-size:14px;font-weight:600;">⚠ ${c.empName} [${c.empId ? c.empId : "—"}] — ${c.reminderTitle}</div><div style="font-size:12px;color:var(--txt3);margin-top:2px;">${c.reason} • ${new Date(c.timestamp).toLocaleDateString()}</div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="badge b-esc">${c.reminders} reminders</span><span style="font-size:12px;color:var(--txt3);">›</span></div>
-      </div>`;
+
+  if(!list.length){
+    wrap.innerHTML='<div class="empty-state"><div class="es-icon">✅</div><div class="es-title">No penalty cards</div><div class="es-sub">No cards found for the selected period.</div></div>';
+    updateCardBadge(); return;
   }
+
+  const totalPages = Math.ceil(list.length / PAGE_SIZE);
+  cardPage = Math.max(1, Math.min(cardPage, totalPages));
+  const cStart = (cardPage-1)*PAGE_SIZE;
+  const cItems = list.slice(cStart, cStart+PAGE_SIZE);
+
+  let html = "";
+  for(let i=0; i<cItems.length; i++) {
+    const c = cItems[i]; const absIdx = cStart+i;
+    const isAuto = c.reason && c.reason.includes('auto');
+    html += `<div class="pen-item" onclick="showPenModal(${absIdx})">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          ⚠ ${c.empName} ${c.empId?`<span class="rem-pip" style="font-size:10px;">${c.empId}</span>`:''}
+          ${isAuto?`<span class="badge b-auto" style="font-size:9px;">Auto</span>`:''}
+        </div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:2px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.reminderTitle}</div>
+        <div style="font-size:11px;color:var(--txt3);margin-top:1px;">${c.reason} · ${new Date(c.timestamp).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <span class="badge b-esc">${c.reminders}×</span>
+        <span style="color:var(--txt3);">›</span>
+      </div>
+    </div>`;
+  }
+  html += renderPagination(list.length, cardPage, 'setCardPage');
   wrap.innerHTML = html;
   updateCardBadge();
 }
