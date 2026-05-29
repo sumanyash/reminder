@@ -512,6 +512,23 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 /* ── b-ok alias ── */
 .b-ok{background:rgba(22,163,74,.12);color:var(--ok);border:1px solid rgba(22,163,74,.2);}
 
+/* ── FAB ── */
+.fab-btn{
+  position:fixed; right:20px; bottom:80px; z-index:190;
+  width:54px; height:54px; border-radius:50%;
+  background:linear-gradient(135deg,#1565c0,#0d47a1);
+  color:#fff; border:none; cursor:pointer;
+  box-shadow:0 6px 20px rgba(13,71,161,.45);
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .18s, box-shadow .18s;
+}
+.fab-btn:hover{transform:scale(1.08);box-shadow:0 10px 28px rgba(13,71,161,.55);}
+.fab-btn:active{transform:scale(.93);}
+@media(min-width:769px){.fab-btn{bottom:28px;right:28px;}}
+
+/* ── Mobile topbar ── */
+.mobile-topbar{display:flex;align-items:center;justify-content:space-between;}
+
 /* ── RESPONSIVE ── */
 @media(max-width:1100px){.sidebar{width:200px;}.main{margin-left:200px!important;padding:1.25rem 1.5rem;}}
 @media(max-width:768px){
@@ -609,11 +626,18 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 <div id="appPage">
 
 <div class="mobile-topbar">
-   <div style="display:flex; align-items:center; gap:10px;">
-     <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Logo" style="width:28px; height:28px; border-radius:50%;">
-     <div style="font-family:'Jost',sans-serif;font-style:italic;font-size:18px;font-weight:700;">Avyukta Intellicall</div>
-   </div>
-   <button class="mobile-nav-btn" onclick="toggleSidebar()">☰</button>
+  <div style="display:flex;align-items:center;gap:9px;">
+    <img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" alt="Logo" style="width:26px;height:26px;border-radius:8px;">
+    <span style="font-family:'Jost',sans-serif;font-style:italic;font-size:16px;font-weight:700;color:#fff;">Avyukta</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:4px;">
+    <div id="mobileUserChip" style="display:flex;align-items:center;gap:6px;padding:4px 10px 4px 6px;background:rgba(255,255,255,.09);border-radius:20px;margin-right:4px;">
+      <div id="mobileAvatar" class="avatar av-emp" style="width:22px;height:22px;font-size:9px;flex-shrink:0;">AD</div>
+      <span id="mobileUserName" style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Admin</span>
+    </div>
+    <button class="mobile-nav-btn" onclick="logout()" title="Sign Out" style="font-size:18px;opacity:.75;padding:6px;">⏻</button>
+    <button class="mobile-nav-btn" onclick="toggleSidebar()" title="Menu" style="font-size:20px;padding:6px;">☰</button>
+  </div>
 </div>
 <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
 
@@ -959,6 +983,11 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 
 </div></div>
 
+<!-- ── FAB: Quick Assign ── -->
+<button id="fabAssign" class="fab-btn hidden" onclick="openFABAssign()" title="Quick Assign Reminder">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+</button>
+
 <!-- ── MOBILE BOTTOM NAV ── -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav">
   <div class="mbn-item active" id="mbn-dashboard" onclick="showSec('dashboard')">
@@ -1178,6 +1207,7 @@ function resetAllData() {
 const DEFAULT_SCRIPT_URL = "api.php";
 let scriptUrl = DEFAULT_SCRIPT_URL;
 
+let currentSec = 'dashboard';
 let pendingRemIdx = null;
 let pendingReassignIdx = null;
 let pendingEditRemIdx = null;
@@ -1628,6 +1658,20 @@ function initApp(){
     
     document.getElementById("sbName").textContent = displayName;
 
+    // Sync mobile topbar user chip
+    const mAvatar = document.getElementById("mobileAvatar");
+    const mName   = document.getElementById("mobileUserName");
+    if(mAvatar && mName){
+      if(currentRole === "admin"){
+        mAvatar.textContent = "AD"; mAvatar.className = "avatar av-admin";
+        mName.textContent = "Admin";
+      } else {
+        const empM = employees.find(function(e){ return e.user === currentUser; });
+        mAvatar.textContent = currentUser.slice(0,2).toUpperCase(); mAvatar.className = "avatar av-emp";
+        mName.textContent = empM ? empM.name : currentUser;
+      }
+    }
+
     if(currentRole === "admin"){
       const adminNavs = ["nav-employees","nav-notifications","nav-settings"];
       for(let i=0; i<adminNavs.length; i++) {
@@ -1636,9 +1680,9 @@ function initApp(){
       }
       const adminSec = document.querySelector(".admin-nav-section");
       if(adminSec) adminSec.classList.remove("hidden");
-      
+
       document.getElementById("reminderSubtitle").textContent = "Manage & assign reminders to employees";
-      
+
       const adminBtns = document.querySelectorAll(".admin-export-btns");
       for(let i=0; i<adminBtns.length; i++) adminBtns[i].classList.remove("hidden");
       // Show admin items in mobile bottom nav
@@ -1662,8 +1706,13 @@ function initApp(){
       document.getElementById("assignCard").classList.remove("hidden");
       document.getElementById("assignAuthTag").innerHTML = currentRole==="admin" ? "🔐 Admin Only" : "🔑 Authorized Manager";
       loadEmpSelect();
+      // Show FAB for users who can assign
+      var fab = document.getElementById("fabAssign");
+      if(fab) fab.classList.remove("hidden");
     } else {
       document.getElementById("assignCard").classList.add("hidden");
+      var fab = document.getElementById("fabAssign");
+      if(fab) fab.classList.add("hidden");
     }
 
     setSyncStatus("ok");
@@ -1678,14 +1727,34 @@ function initApp(){
 
 function logout(){
   logAudit("Logged out of the system");
-  syncSheet({action: "logout"}); // fire-and-forget
+  syncSheet({action: "logout"});
   _clearSession();
   currentUser = ""; currentRole = "";
-  document.getElementById("loginPage").style.display  = "flex";
-  document.getElementById("appPage").style.display = "none";
+  var fab = document.getElementById("fabAssign");
+  if(fab) fab.classList.add("hidden");
+  document.getElementById("loginPage").style.display = "flex";
+  document.getElementById("appPage").style.display   = "none";
+}
+
+function openFABAssign() {
+  // Switch to reminders section and scroll to the assign form
+  if(currentSec !== 'reminders') showSec('reminders');
+  var ac = document.getElementById('assignCard');
+  if(!ac || ac.classList.contains('hidden')) return;
+  setTimeout(function(){
+    ac.scrollIntoView({behavior:'smooth', block:'start'});
+    // Pulse highlight so user notices the form
+    ac.style.transition = 'box-shadow .25s';
+    ac.style.boxShadow  = '0 0 0 3px rgba(21,101,192,.5), 0 8px 24px rgba(21,101,192,.2)';
+    setTimeout(function(){ ac.style.boxShadow = ''; }, 1400);
+    // Focus first input
+    var first = ac.querySelector('input:not([type=hidden]):not([disabled]), select');
+    if(first) first.focus();
+  }, 150);
 }
 
 function showSec(id){
+  currentSec = id;
   document.querySelectorAll(".sp").forEach(function(s){ s.classList.remove("on"); });
   document.querySelectorAll(".nav-item").forEach(function(n){ n.classList.remove("active"); });
   document.querySelectorAll(".mbn-item").forEach(function(n){ n.classList.remove("active"); });
@@ -1696,6 +1765,14 @@ function showSec(id){
   if(ni) ni.classList.add("active");
   var mni = document.getElementById("mbn-"+id);
   if(mni) mni.classList.add("active");
+
+  // FAB: show on reminders when user can assign, hide otherwise
+  var fab = document.getElementById("fabAssign");
+  if(fab){
+    var canAssign = (currentRole === "admin");
+    if(!canAssign){ var e=employees.find(function(x){return x.user===currentUser;}); canAssign=e&&e.canAssign; }
+    fab.style.display = (id === 'reminders' && canAssign) ? 'flex' : 'none';
+  }
 
   if(window.innerWidth <= 768){
     var sb = document.querySelector('.sidebar');
