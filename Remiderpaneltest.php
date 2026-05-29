@@ -469,30 +469,28 @@ tr:hover td{background:#f8fafd;}
     <form onsubmit="event.preventDefault(); login();">
       <div class="fg">
         <label>Sign in as</label>
-        <select id="role" disabled>
+        <select id="role">
           <option value="admin">🔐 Admin</option>
           <option value="employee">👤 Employee</option>
         </select>
       </div>
       
-      <div class="fg"><label>Username</label><input id="username" placeholder="Enter username" autocomplete="username" required disabled></div>
+      <div class="fg"><label>Username</label><input id="username" placeholder="Enter username" autocomplete="username" required></div>
       <div class="fg" style="position:relative;">
         <label>Password</label>
-        <input id="password" type="password" placeholder="Enter password" style="padding-right: 40px;" autocomplete="current-password" required disabled>
+        <input id="password" type="password" placeholder="Enter password" style="padding-right: 40px;" autocomplete="current-password" required>
         <button type="button" onclick="togglePassword('password', this)" style="position:absolute; right:10px; top:25px; background:none; border:none; cursor:pointer; font-size:14px; opacity:0.7;">👁️</button>
       </div>
       
       <div class="fg" style="display:flex; justify-content:space-between; align-items:center;">
         <label style="margin-bottom:0; display:flex; align-items:center; gap:6px; cursor:pointer; text-transform:none; letter-spacing:normal; font-size:12px; color:var(--txt2);">
-          <input type="checkbox" id="rememberMe" style="width:auto;" disabled> Remember me
+          <input type="checkbox" id="rememberMe" style="width:auto;"> Remember me
         </label>
         <a href="#" onclick="alert('Reach out to Admin to reset your password.')" style="font-size:12px; color:var(--acc); text-decoration:none;">Forgot Password?</a>
       </div>
 
-      <button type="submit" id="loginBtn" class="btn btn-primary btn-full" style="padding: 14px; font-size: 14px;" disabled>Connecting to Server... ⏳</button>
+      <button type="submit" id="loginBtn" class="btn btn-primary btn-full" style="padding: 14px; font-size: 14px;">Sign In &rarr;</button>
     </form>
-
-    <p style="text-align:center;font-size:12px;color:var(--txt3);margin-top:1.25rem;">Admin: <span style="font-family:'DM Mono',monospace;">admin / admin123</span></p>
   </div>
 </div>
 
@@ -641,6 +639,27 @@ tr:hover td{background:#f8fafd;}
           </select>
         </div>
       </div>
+      <div class="row2">
+        <div class="fg">
+          <label>Total Duration (Auto-Escalate After)</label>
+          <select id="reminderDuration" onchange="previewSchedule()">
+            <option value="0">No Auto-Escalation</option>
+            <option value="3">3 Hours</option>
+            <option value="6">6 Hours</option>
+            <option value="12" selected>12 Hours</option>
+            <option value="24">24 Hours</option>
+            <option value="48">48 Hours (2 Days)</option>
+            <option value="72">72 Hours (3 Days)</option>
+          </select>
+          <div id="schedulePreview" style="font-size:11px;color:var(--acc);margin-top:5px;font-family:'DM Mono',monospace;">📅 Notifications at: 3h, 6h, 9h, 12h</div>
+        </div>
+        <div class="fg">
+          <label>Send via WhatsApp Instance</label>
+          <select id="reminderWAConfig">
+            <option value="">— Default Instance —</option>
+          </select>
+        </div>
+      </div>
       <div class="fg" style="max-width: 50%;">
           <label>Attachment (optional)</label>
           <label class="file-drop" for="reminderImg">📎 Click to attach image</label>
@@ -779,12 +798,44 @@ tr:hover td{background:#f8fafd;}
 
   <div class="sp" id="sec-settings">
     <div class="ph">
-      <div class="ph-left"><h2>Settings</h2><p>Database &amp; notification configuration</p></div>
+      <div class="ph-left"><h2>Settings</h2><p>WhatsApp instances &amp; system configuration</p></div>
+      <div class="ph-right"><span class="admin-only-tag">🔐 Admin Only</span></div>
     </div>
-    <div class="card" style="max-width:600px;">
+
+    <!-- WA Config -->
+    <div class="card" style="max-width:760px;margin-bottom:1.25rem;">
+      <div class="ch"><span class="ct">WhatsApp Instances</span></div>
+      <div class="tbl-wrap" id="waConfigList" style="margin-bottom:1rem;">
+        <p style="color:var(--txt3);font-size:13px;padding:.5rem 0;">Loading…</p>
+      </div>
+      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;padding:1.25rem;">
+        <p style="font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.5px;">Add / Edit Instance</p>
+        <input type="hidden" id="waEditId">
+        <div class="row2">
+          <div class="fg"><label>Display Name</label><input id="waName" placeholder="e.g. Yash (RHS2B4V4AY)"></div>
+          <div class="fg"><label>Instance ID</label><input id="waInstanceId" placeholder="RHS2B4V4AY"></div>
+        </div>
+        <div class="row2">
+          <div class="fg"><label>Access Token</label><input id="waToken" placeholder="D6D9Q6VM  (leave blank to keep existing)"></div>
+          <div class="fg"><label>API URL</label><input id="waApiUrl" value="https://wa.clouddialer.in/api/v2/messages"></div>
+        </div>
+        <div class="fg">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--txt);">
+            <input type="checkbox" id="waIsDefault" style="width:16px;height:16px;"> Set as default (used for all reminders unless overridden)
+          </label>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="saveWAConfig()">💾 Save Instance</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearWAForm()">✕ Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DB Connection -->
+    <div class="card" style="max-width:760px;">
       <div class="sg">
         <h4>Database API</h4>
-        <p class="settings-note">All data is stored in a local MySQL database. The API endpoint is <strong>api.php</strong> (same server).</p>
+        <p class="settings-note">All data is stored in a local MySQL database via <strong>api.php</strong>.</p>
         <input type="hidden" id="scriptUrl" value="api.php">
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
           <button class="btn btn-ghost btn-sm" onclick="testConnection()">🔌 Test DB Connection</button>
@@ -951,12 +1002,24 @@ tr:hover td{background:#f8fafd;}
 /* ══════════════════════════════════════════════
    DATA & CONFIG
 ══════════════════════════════════════════════ */
-const ADMIN = { user:"admin", pass:"admin123" };
-
 let employees = [];
 let reminders = [];
-let cards = [];
-let notifLog = [];
+let cards     = [];
+let notifLog  = [];
+let waConfigs = [];
+
+// Session — persisted across page refreshes
+let sessionToken = sessionStorage.getItem('reminderToken') || '';
+function _saveSession(tok, user, role) {
+  sessionToken = tok;
+  sessionStorage.setItem('reminderToken', tok);
+  sessionStorage.setItem('reminderUser',  user);
+  sessionStorage.setItem('reminderRole',  role);
+}
+function _clearSession() {
+  sessionToken = '';
+  ['reminderToken','reminderUser','reminderRole'].forEach(k => sessionStorage.removeItem(k));
+}
 
 // Reset data to empty state
 function resetAllData() {
@@ -1100,36 +1163,24 @@ async function forceSheetsSync() {
 
 // ── ON PAGE LOAD INIT ──
 document.addEventListener("DOMContentLoaded", async function() {
-  try {
-    console.log("Page load initialization started");
-    const themeBtns = document.querySelectorAll('.theme-btn');
-    themeBtns.forEach(b => b.textContent = '🌙');
+  document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '🌙');
 
-    console.log("Attempting to fetch database data on page load...");
-    await fetchSheetsData();
-    console.log("Database data loaded successfully");
-    
-    const idsToEnable = ["role", "username", "password", "rememberMe", "loginBtn"];
-    idsToEnable.forEach(id => { 
-        if(document.getElementById(id)) document.getElementById(id).disabled = false; 
-    });
-    const loginBtn = document.getElementById("loginBtn");
-    if(loginBtn) loginBtn.innerHTML = "Sign In &rarr;";
-  } catch(e) {
-    console.error("Failed to initialize - Database connection required", e);
-    const idsToEnable = ["role", "username", "password", "rememberMe", "loginBtn"];
-    idsToEnable.forEach(id => { 
-        if(document.getElementById(id)) document.getElementById(id).disabled = false; 
-    });
-    const loginBtn = document.getElementById("loginBtn");
-    if(loginBtn) loginBtn.innerHTML = "Sign In &rarr;";
-    // Show a non-blocking banner instead of a blocking alert
-    const banner = document.createElement("div");
-    banner.id = "connectionBanner";
-    banner.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#7f1d1d;color:#fecaca;padding:12px 20px;font-size:13px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:space-between;gap:12px;";
-    banner.innerHTML = '<span>⚠️ <strong>Database Connection Error:</strong> ' + e.message + ' — Ensure api.php is accessible and the MySQL database is running.</span><button onclick="this.parentElement.remove()" style="background:none;border:1px solid #fecaca;color:#fecaca;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;flex-shrink:0;">Dismiss</button>';
-    document.body.prepend(banner);
+  // Try to restore existing session
+  const savedUser = sessionStorage.getItem('reminderUser') || '';
+  const savedRole = sessionStorage.getItem('reminderRole') || '';
+  if (sessionToken && savedUser && savedRole) {
+    try {
+      currentUser = savedUser; currentRole = savedRole;
+      await fetchSheetsData();
+      await loadWAConfigs();
+      initApp();
+      return;
+    } catch(e) {
+      _clearSession(); currentUser = ""; currentRole = "";
+    }
   }
+  // No valid session — show login
+  document.getElementById("loginPage").style.display = "flex";
 });
 
 function togglePassword(id, btn) {
@@ -1144,36 +1195,21 @@ function togglePassword(id, btn) {
 }
 
 /* ══════════════════════════════════════════════
-   WHATSAPP API INTEGRATION
+   WHATSAPP — server-side (credentials in DB)
 ══════════════════════════════════════════════ */
-async function sendWhatsAppMessage(phoneStr, message) {
+async function sendWhatsAppMessage(phoneStr, message, waConfigId) {
   if (!phoneStr) return;
-  const cleanPhone = phoneStr.replace(/\D/g, '');
-  if(cleanPhone.length < 10) return;
-  // Ensure full international format (prepend 91 for India if 10-digit number)
-  const intlPhone = cleanPhone.length === 10 ? "91" + cleanPhone : cleanPhone;
-
-  const url = 'https://wa.clouddialer.in/api/v2/messages';
-  const payload = {
-    instanceId: 'ITWL67WGNI',
-    accessToken: 'D6D9Q6VM',
-    to: intlPhone,
-    content: { text: message }
-  };
-
+  if (phoneStr.replace(/\D/g, '').length < 10) return;
   try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer D6D9Q6VM'
-      },
-      body: JSON.stringify(payload)
+    const result = await syncSheet({
+      action: "sendWA",
+      phone: phoneStr,
+      message: message,
+      waConfigId: waConfigId || null
     });
-    const data = await response.json();
-    return data;
+    return result;
   } catch (err) {
-    console.error("WhatsApp API Error:", err);
+    console.error("WA send error:", err);
   }
 }
 
@@ -1242,13 +1278,27 @@ async function syncSheet(payload, retryCount = 0){
   if(!scriptUrl) { setSyncStatus("not-configured"); return { success: false, reason: "no-url" }; }
   setSyncStatus("syncing");
   try {
+    // Always attach session token if available
+    const body = sessionToken ? {...payload, token: sessionToken} : payload;
     const params = new URLSearchParams();
-    params.append("data", JSON.stringify(payload));
+    params.append("data", JSON.stringify(body));
     const res = await fetch(scriptUrl, { method: "POST", body: params });
     const text = await res.text();
     let json = {};
     try { json = JSON.parse(text); } catch(e) { throw new Error("Server error - check api.php and database connection."); }
-    if (json.success === false) throw new Error(json.reason || "Unknown API Error");
+    if (json.success === false) {
+      // Handle session expiry
+      if (json.reason && (json.reason.includes('Session expired') || json.reason.includes('Please login'))) {
+        _clearSession();
+        showToast("Session expired — please login again.", "warn");
+        setTimeout(function() {
+          currentUser = ""; currentRole = "";
+          document.getElementById("appPage").style.display = "none";
+          document.getElementById("loginPage").style.display = "flex";
+        }, 1800);
+      }
+      throw new Error(json.reason || "Unknown API Error");
+    }
     setSyncStatus("ok");
     return { success: true, data: json };
   } catch(err) {
@@ -1302,11 +1352,12 @@ setInterval(async function() {
 }, 60000); // Auto-refresh from database (Every 1 Minute)
 
 async function checkAutoReminders() {
+  // Handled server-side by cron_reminder.php every 5 minutes
   if (currentRole !== "admin") return;
   const now = Date.now();
   for (let i = 0; i < reminders.length; i++) {
     const t = reminders[i];
-    if (!t.done && t.autoInterval > 0) {
+    if (!t.done && t.autoInterval > 0 && !t.totalDuration) { // legacy manual-interval reminders only
       const lastTs = new Date(t.lastRemindTs ? t.lastRemindTs : t.timestamp).getTime();
       if (isNaN(lastTs)) {
         t.lastRemindTs = t.timestamp || new Date().toISOString();
@@ -1353,70 +1404,37 @@ function updateCountdowns() {
    AUTH & INIT
 ══════════════════════════════════════════════ */
 async function login(){
+  const roleEl = document.getElementById("role");
+  const userEl = document.getElementById("username");
+  const passEl = document.getElementById("password");
+  const btn    = document.getElementById("loginBtn");
+
+  const role = roleEl.value;
+  const user = userEl.value.trim();
+  const pass = passEl.value.trim();
+  if (!user || !pass) { showToast("Enter username and password", "warn"); return; }
+
+  btn.disabled  = true;
+  btn.textContent = "Signing in…";
   try {
-    const roleEl = document.getElementById("role");
-    const userEl = document.getElementById("username");
-    const passEl = document.getElementById("password");
-    const btn = document.getElementById("loginBtn");
-    
-    if(!roleEl || !userEl || !passEl) {
-        alert("Login form elements missing. Please refresh.");
-        return;
+    const result = await syncSheet({action: "login", user, pass, role});
+    if (!result.success || !result.data || !result.data.success) {
+      throw new Error(result.data ? result.data.reason : (result.reason || "Login failed"));
     }
+    const d = result.data;
+    _saveSession(d.token, d.user, d.role);
+    currentUser = d.user;
+    currentRole = d.role;
 
-    const role = roleEl.value;
-    const user = userEl.value.trim();
-    const pass = passEl.value.trim();
-
-    if(!user || !pass) {
-        alert("Please enter both username and password.");
-        return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = "Authenticating...";
-    console.log("Login: Fetching latest database data...");
-    try {
-      await fetchSheetsData();
-    } catch (e) {
-      console.warn("Could not fetch database data before login, proceeding anyway:", e);
-    }
-
-    let valid = false;
-
-    if(role === "admin"){
-      if(user === ADMIN.user && pass === ADMIN.pass){
-        currentRole = "admin"; currentUser = "admin"; valid = true;
-      } else {
-        alert("Invalid Admin credentials. Default is admin / admin123");
-        btn.disabled = false;
-        btn.innerHTML = "Sign In &rarr;";
-        return;
-      }
-    } 
-    else if (role === "employee") {
-      const emp = employees.find(function(e) { return e.user === user && e.pass === pass; });
-      if(emp){
-        currentRole = "employee"; currentUser = user; valid = true;
-      } else {
-        alert("Invalid Employee credentials. Please verify your username and password.");
-        btn.disabled = false;
-        btn.innerHTML = "Sign In &rarr;";
-        return;
-      }
-    }
-
-    if (valid) {
-      logAudit("Logged into the system");
-      
-      btn.disabled = false;
-      btn.innerHTML = "Sign In &rarr;";
-      initApp();
-    }
-  } catch (err) {
-    alert("Login error: " + err.message);
-    const btn = document.getElementById("loginBtn");
-    if (btn) { btn.disabled = false; btn.innerHTML = "Sign In &rarr;"; }
+    await fetchSheetsData();
+    await loadWAConfigs();
+    logAudit("Logged into the system");
+    initApp();
+  } catch(err) {
+    showToast(err.message, "err");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "Sign In &rarr;";
   }
 }
 
@@ -1487,9 +1505,9 @@ function initApp(){
       document.getElementById("assignCard").classList.add("hidden");
     }
 
-    document.getElementById("scriptUrl").value = scriptUrl;
-    setSyncStatus(scriptUrl ? "ok" : "not-configured");
-    refreshAll(); 
+    setSyncStatus("ok");
+    loadWASelect();
+    refreshAll();
     showSec("dashboard");
     
   } catch(e) {
@@ -1497,11 +1515,13 @@ function initApp(){
   }
 }
 
-function logout(){ 
+function logout(){
   logAudit("Logged out of the system");
-  currentUser=""; currentRole=""; 
-  document.getElementById("loginPage").style.display="flex"; 
-  document.getElementById("appPage").style.display="none"; 
+  syncSheet({action: "logout"}); // fire-and-forget
+  _clearSession();
+  currentUser = ""; currentRole = "";
+  document.getElementById("loginPage").style.display  = "flex";
+  document.getElementById("appPage").style.display = "none";
 }
 
 function showSec(id){ 
@@ -1933,7 +1953,7 @@ function previewFile(input){
     }
 }
 
-function clearAssignForm(){ 
+function clearAssignForm(){
     const ids = ["reminderTitle","reminderDesc","reminderWaGroup"];
     for(let i=0; i<ids.length; i++) {
         const el = document.getElementById(ids[i]);
@@ -1942,7 +1962,118 @@ function clearAssignForm(){
     const imgEl = document.getElementById("reminderImg");
     if(imgEl) imgEl.value = "";
     const lbl = document.getElementById("fileLabel");
-    if(lbl) lbl.textContent = ""; 
+    if(lbl) lbl.textContent = "";
+}
+
+/* ══════════════════════════════════════════════
+   SCHEDULE CALCULATOR
+══════════════════════════════════════════════ */
+function calculateScheduleJS(hours) {
+  const h = parseInt(hours) || 0;
+  if (h <= 0) return [];
+  if (h <= 2) return [h];
+  if (h <= 4) return [Math.ceil(h/2), h];
+  if (h <= 8) return [Math.round(h*0.33), Math.round(h*0.67), h];
+  return [Math.round(h*0.25), Math.round(h*0.50), Math.round(h*0.75), h];
+}
+
+function previewSchedule() {
+  const dur = parseInt(document.getElementById("reminderDuration").value) || 0;
+  const el  = document.getElementById("schedulePreview");
+  if (!el) return;
+  if (!dur) { el.textContent = "⚠️ No automatic notifications or escalation"; return; }
+  const sch = calculateScheduleJS(dur);
+  el.textContent = "📅 Auto-notifications at: " + sch.map(h => h+"h").join(", ") + " — escalates at " + dur + "h if unresolved";
+}
+
+/* ══════════════════════════════════════════════
+   WA CONFIG MANAGEMENT
+══════════════════════════════════════════════ */
+async function loadWAConfigs() {
+  try {
+    const res = await syncSheet({action: "getWAConfig"});
+    if (res.success && res.data && res.data.configs) {
+      waConfigs = res.data.configs;
+      loadWASelect();
+      renderWAConfigs();
+    }
+  } catch(e) { console.warn("Could not load WA configs:", e); }
+}
+
+function loadWASelect() {
+  const sel = document.getElementById("reminderWAConfig");
+  if (!sel) return;
+  let opts = '<option value="">— Default Instance —</option>';
+  waConfigs.forEach(function(c) {
+    opts += '<option value="' + c.id + '"' + (c.is_default ? ' selected' : '') + '>' + c.name + ' [' + c.instance_id + ']</option>';
+  });
+  sel.innerHTML = opts;
+}
+
+function renderWAConfigs() {
+  const wrap = document.getElementById("waConfigList");
+  if (!wrap) return;
+  if (!waConfigs.length) {
+    wrap.innerHTML = '<p style="color:var(--txt3);font-size:13px;padding:.5rem 0;">No WhatsApp instances configured yet. Add one below.</p>';
+    return;
+  }
+  let html = '<table><thead><tr><th>Name</th><th>Instance ID</th><th>API URL</th><th>Default</th><th>Actions</th></tr></thead><tbody>';
+  waConfigs.forEach(function(c) {
+    html += '<tr>' +
+      '<td><strong>' + c.name + '</strong></td>' +
+      '<td><span class="rem-pip">' + c.instance_id + '</span></td>' +
+      '<td style="font-size:11px;color:var(--txt3);">' + c.api_url + '</td>' +
+      '<td>' + (c.is_default ? '<span class="badge b-ok">✓ Default</span>' : '') + '</td>' +
+      '<td>' +
+        '<button class="btn btn-ghost btn-xs" onclick="editWAConfig(' + c.id + ')">✏️ Edit</button>' +
+        '<button class="btn btn-err btn-xs" style="margin-left:4px;" onclick="deleteWAConfig(' + c.id + ')">🗑️</button>' +
+      '</td></tr>';
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+async function saveWAConfig() {
+  if (currentRole !== "admin") return;
+  const id   = document.getElementById("waEditId").value || null;
+  const name = document.getElementById("waName").value.trim();
+  const inst = document.getElementById("waInstanceId").value.trim();
+  const tok  = document.getElementById("waToken").value.trim();
+  const url  = document.getElementById("waApiUrl").value.trim();
+  const isDef= document.getElementById("waIsDefault").checked;
+  if (!name || !inst) { showToast("Name and Instance ID required", "warn"); return; }
+  const res = await syncSheet({action:"saveWAConfig", id, name, instance_id:inst, access_token:tok||'***', api_url:url, is_default:isDef});
+  if (res.success && res.data && res.data.success) {
+    showToast("WA instance saved!", "ok");
+    clearWAForm();
+    await loadWAConfigs();
+  } else {
+    showToast((res.data && res.data.reason) || "Save failed", "err");
+  }
+}
+
+function editWAConfig(id) {
+  const c = waConfigs.find(function(x) { return x.id === id; });
+  if (!c) return;
+  document.getElementById("waEditId").value    = c.id;
+  document.getElementById("waName").value      = c.name;
+  document.getElementById("waInstanceId").value= c.instance_id;
+  document.getElementById("waToken").value     = "";
+  document.getElementById("waApiUrl").value    = c.api_url;
+  document.getElementById("waIsDefault").checked = c.is_default;
+}
+
+async function deleteWAConfig(id) {
+  if (currentRole !== "admin") return;
+  if (!confirm("Delete this WhatsApp instance?")) return;
+  const res = await syncSheet({action:"deleteWAConfig", id});
+  if (res.success) { showToast("Instance deleted", "ok"); await loadWAConfigs(); }
+}
+
+function clearWAForm() {
+  ["waEditId","waName","waInstanceId","waToken"].forEach(function(id) { const el=document.getElementById(id); if(el) el.value=""; });
+  document.getElementById("waApiUrl").value = "https://wa.clouddialer.in/api/v2/messages";
+  document.getElementById("waIsDefault").checked = false;
 }
 
 function assignReminder(){
@@ -1960,7 +2091,11 @@ function assignReminder(){
   const waGroup = document.getElementById("reminderWaGroup").value.trim();
   const fileInput = document.getElementById("reminderImg");
   const file    = (fileInput && fileInput.files && fileInput.files.length > 0) ? fileInput.files[0] : null;
-  const autoInterval = parseInt(document.getElementById("reminderInterval").value) || 0;
+  const autoInterval   = parseInt(document.getElementById("reminderInterval").value) || 0;
+  const totalDuration  = parseInt(document.getElementById("reminderDuration").value) || 0;
+  const waConfigId     = parseInt(document.getElementById("reminderWAConfig").value) || null;
+  const deadline       = totalDuration > 0 ? new Date(Date.now() + totalDuration * 3600000).toISOString() : null;
+  const notifySchedule = calculateScheduleJS(totalDuration);
 
   if(!emp){ showToast("Select an employee","warn"); return; }
   if(!title||!desc){ showToast("Enter reminder title and description","warn"); return; }
@@ -1978,15 +2113,13 @@ function assignReminder(){
     waMsg += "🔗 *Panel Link:* " + currentUrl + "\n\n";
     waMsg += "Signature : From Avyukta CRM Team";
 
-    reminders.push({ 
-      emp: emp, empName: empObj.name, empId: empObj.id, empPhone: empObj.phone, empEmail: empObj.email, 
+    reminders.push({
+      emp: emp, empName: empObj.name, empId: empObj.id, empPhone: empObj.phone, empEmail: empObj.email,
       cCode: empObj.cCode, pNum: empObj.pNum,
-      title: title, desc: desc, waGroup: waGroup, img: imgData, reminder: 1, done: false, replies: [],  
-      autoInterval: autoInterval,
-      sharedWith: [], 
-      lastRemindTs: ts,
-      timestamp: ts,
-      assignedBy: currentUser 
+      title: title, desc: desc, waGroup: waGroup, img: imgData, reminder: 1, done: false, replies: [],
+      autoInterval: autoInterval, totalDuration: totalDuration, deadline: deadline,
+      notifySchedule: notifySchedule, notifiedHours: [0], escalated: false,
+      waConfigId: waConfigId, sharedWith: [], lastRemindTs: ts, timestamp: ts, assignedBy: currentUser
     });
     markKnownReminders([reminders[reminders.length - 1]]);
     
@@ -2391,7 +2524,7 @@ function renderReminders(){
 
   if(currentRole==="admin"){
     let html = `<div class="card"><div class="tbl-wrap"><table>
-      <thead><tr><th>Employee</th><th>Reminder</th><th>Auto Settings</th><th>Reminders</th><th>Status</th><th style="min-width:210px;">Action</th></tr></thead>
+      <thead><tr><th>Employee</th><th>Reminder</th><th>Schedule / Deadline</th><th>Sent</th><th>Status</th><th style="min-width:210px;">Action</th></tr></thead>
       <tbody>`;
     for(let i=0; i<list.length; i++) {
         const t = list[i];
@@ -2407,8 +2540,11 @@ function renderReminders(){
           <td><strong>${t.title}</strong><div style="font-size:11px;color:var(--txt3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.desc}</div>
             ${t.waGroup ? `<span class="badge b-info" style="font-size:9px;margin-top:4px;">WA: ${t.waGroup}</span>` : ''}
           </td>
-          <td>${t.autoInterval > 0 ? `<span class="badge b-auto">⏱ ${t.autoInterval}h</span>` : `<span style="font-size:11px;color:var(--txt3);">Manual</span>`}</td>
-          <td><span class="rem-pip ${hot?"hot":""}">${remCount}</span> ${getCountdownHTML(t)}</td>
+          <td>${t.totalDuration > 0
+            ? `<span class="badge b-auto">⏱ ${t.totalDuration}h total</span>${t.deadline ? `<div style="font-size:10px;color:var(--txt3);margin-top:3px;">Due: ${new Date(t.deadline).toLocaleDateString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>` : ''}`
+            : (t.autoInterval > 0 ? `<span class="badge b-auto">⏱ ${t.autoInterval}h interval</span>` : `<span style="font-size:11px;color:var(--txt3);">Manual</span>`)
+          }</td>
+          <td><span class="rem-pip ${hot?"hot":""}">${remCount}</span><div style="font-size:10px;color:var(--txt3);margin-top:3px;">${t.notifiedHours && t.notifySchedule && t.notifySchedule.length ? t.notifiedHours.length+'/'+t.notifySchedule.length+' notifs' : ''}</div> ${getCountdownHTML(t)}</td>
           <td><span class="badge ${getBadgeClass(st)}">${st}</span></td>
           <td>${!t.done ? `
               <button class="btn btn-warn btn-xs" onclick="openReminder(${i})">🔔 Remind</button>
