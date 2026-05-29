@@ -116,6 +116,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 
 /* ── LAYOUT & RESPONSIVENESS ── */
 #appPage{display:none;}
+/* Hide login instantly when restoring session — prevents white flash */
+.session-loading #loginPage{display:none!important;}
+.session-loading #appPage{display:none!important;}
 .layout{display:flex;min-height:100vh;}
 .sidebar{width:240px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100; transition: transform 0.3s ease, background 0.3s;}
 .main{margin-left:240px;padding:2rem;flex:1; min-width: 0;} 
@@ -506,27 +509,35 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 .mbn-badge{position:absolute;top:-4px;right:-6px;background:var(--err);color:#fff;font-size:8px;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;padding:0 3px;}
 .img-overlay{background:rgba(0,0,0,.88);}
 
+/* ── b-ok alias ── */
+.b-ok{background:rgba(22,163,74,.12);color:var(--ok);border:1px solid rgba(22,163,74,.2);}
+
 /* ── RESPONSIVE ── */
 @media(max-width:1100px){.sidebar{width:200px;}.main{margin-left:200px!important;padding:1.25rem 1.5rem;}}
 @media(max-width:768px){
-  .sidebar{display:none!important;}
+  /* Sidebar becomes slide-in drawer (not display:none) */
+  .sidebar{transform:translateX(-100%);display:flex!important;z-index:150;width:240px;}
+  .sidebar.open{transform:translateX(0);box-shadow:6px 0 30px rgba(0,0,0,.5);}
   .mobile-bottom-nav{display:flex;}
   .mobile-topbar{display:flex!important;}
-  .main{margin-left:0!important;padding:.875rem .875rem calc(60px + .875rem);}
-  .toast{bottom:68px;right:12px;max-width:calc(100vw - 24px);}
-  .chat-widget{width:calc(100vw - 20px);right:10px;height:400px;bottom:68px;}
+  .main{margin-left:0!important;padding:.875rem .875rem calc(62px + .875rem);}
+  .layout{padding-top:0;}
+  .toast{bottom:70px;right:12px;max-width:calc(100vw - 24px);}
+  .chat-widget{width:calc(100vw - 20px);right:10px;height:400px;bottom:70px;}
   .stats{grid-template-columns:1fr 1fr;gap:.65rem;}
-  .stat{padding:.875rem .875rem;}.stat .s-val{font-size:24px;}
+  .stat{padding:.875rem;}.stat .s-val{font-size:24px;}
   .card{padding:.875rem;border-radius:12px;}
   .row2{grid-template-columns:1fr;gap:0;}
+  .fg{margin-bottom:.75rem;}
   .export-bar{flex-direction:column;align-items:stretch;gap:7px;}
   .export-bar select,.export-bar input[type="date"]{width:100%;}
   .export-bar .sep{display:none;}
   .modal{width:96vw;padding:1.1rem;border-radius:16px;max-height:88vh;}
-  .reminder-card{flex-direction:column;gap:.65rem;padding:.875rem;}
-  .reminder-thumb{width:100%;height:160px;border-radius:10px;}
+  .modal h3{font-size:16px;}
+  .reminder-card{flex-direction:column;gap:.6rem;padding:.875rem;}
+  .reminder-thumb{width:100%;height:150px;border-radius:10px;}
   .reply-area{flex-direction:column;}
-  .reply-area button{justify-content:center;}
+  .reply-area button{justify-content:center;width:100%;}
   .ph{flex-direction:column;gap:.5rem;align-items:flex-start;}
   .ph-right{justify-content:flex-start;}
   .ph-left h2{font-size:17px;}
@@ -691,16 +702,16 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 
     <div class="export-bar" id="reminderFilterBar">
       <span style="font-size:11px;color:var(--txt2);font-weight:600;letter-spacing:1px;text-transform:uppercase;">Filter:</span>
-      <select id="reminderFilterType" onchange="toggleCustomDates('reminder'); renderReminders();">
+      <select id="reminderFilterType" onchange="reminderPage=1; toggleCustomDates('reminder'); renderReminders();">
         <option value="month" selected>This Month</option>
         <option value="prev_month">Previous Month</option>
         <option value="all">All Time</option>
         <option value="year">This Year</option>
         <option value="custom">Custom Date Range</option>
       </select>
-      <input type="date" id="reminderDateStart" class="hidden" onchange="renderReminders()">
+      <input type="date" id="reminderDateStart" class="hidden" onchange="reminderPage=1; renderReminders()">
       <span id="reminderDateTo" class="hidden" style="font-size:12px;color:var(--txt3);">to</span>
-      <input type="date" id="reminderDateEnd" class="hidden" onchange="renderReminders()">
+      <input type="date" id="reminderDateEnd" class="hidden" onchange="reminderPage=1; renderReminders()">
       
       <div class="sep admin-export-btns"></div>
       
@@ -782,16 +793,16 @@ hr{border:none;border-top:1px solid var(--b1);margin:1.25rem 0;}
 
     <div class="export-bar" id="cardFilterBar">
       <span style="font-size:11px;color:var(--txt2);font-weight:600;letter-spacing:1px;text-transform:uppercase;">Filter:</span>
-      <select id="cardFilterType" onchange="toggleCustomDates('card'); renderCards();">
+      <select id="cardFilterType" onchange="cardPage=1; toggleCustomDates('card'); renderCards();">
         <option value="month" selected>This Month</option>
         <option value="prev_month">Previous Month</option>
         <option value="all">All Time</option>
         <option value="year">This Year</option>
         <option value="custom">Custom Date Range</option>
       </select>
-      <input type="date" id="cardDateStart" class="hidden" onchange="renderCards()">
+      <input type="date" id="cardDateStart" class="hidden" onchange="cardPage=1; renderCards()">
       <span id="cardDateTo" class="hidden" style="font-size:12px;color:var(--txt3);">to</span>
-      <input type="date" id="cardDateEnd" class="hidden" onchange="renderCards()">
+      <input type="date" id="cardDateEnd" class="hidden" onchange="cardPage=1; renderCards()">
       
       <div class="sep admin-export-btns"></div>
       
@@ -1157,9 +1168,11 @@ function _clearSession() {
 function resetAllData() {
   employees = [];
   reminders = [];
-  cards = [];
-  notifLog = [];
-  console.log("All data reset to empty state");
+  cards     = [];
+  notifLog  = [];
+  reminderPage = 1;
+  cardPage     = 1;
+  empPage      = 1;
 }
 
 const DEFAULT_SCRIPT_URL = "api.php";
@@ -1297,23 +1310,37 @@ async function forceSheetsSync() {
 document.addEventListener("DOMContentLoaded", async function() {
   document.querySelectorAll('.theme-btn').forEach(b => b.textContent = '🌙');
 
-  // Try to restore existing session
   const savedUser = sessionStorage.getItem('reminderUser') || '';
   const savedRole = sessionStorage.getItem('reminderRole') || '';
+
   if (sessionToken && savedUser && savedRole) {
+    // Hide both pages immediately to avoid flash, show a loading indicator
+    document.body.classList.add('session-loading');
+    const loader = document.createElement('div');
+    loader.id = 'pageLoader';
+    loader.style.cssText = 'position:fixed;inset:0;background:#0b1525;display:flex;align-items:center;justify-content:center;z-index:99999;flex-direction:column;gap:12px;';
+    loader.innerHTML = '<div style="width:36px;height:36px;border:3px solid rgba(255,255,255,.1);border-top-color:#4a90d9;border-radius:50%;animation:spin .7s linear infinite;"></div><div style="color:rgba(255,255,255,.4);font-size:12px;font-family:DM Sans,sans-serif;">Loading…</div>';
+    document.body.appendChild(loader);
+
     try {
       currentUser = savedUser; currentRole = savedRole;
       await fetchSheetsData();
       await loadWAConfigs();
+      document.body.classList.remove('session-loading');
+      loader.remove();
       initApp();
       return;
     } catch(e) {
       _clearSession(); currentUser = ""; currentRole = "";
+      document.body.classList.remove('session-loading');
+      loader.remove();
     }
   }
-  // No valid session — show login
+
   document.getElementById("loginPage").style.display = "flex";
 });
+// Spinner keyframe (injected once)
+(function(){ var s=document.createElement('style'); s.textContent='@keyframes spin{to{transform:rotate(360deg)}}'; document.head.appendChild(s); })();
 
 function togglePassword(id, btn) {
   const input = document.getElementById(id);
@@ -3050,6 +3077,18 @@ function refreshAll(){
 }
 
 document.getElementById("penModal").addEventListener("click",function(e){if(e.target===this)closePenModal();});
+
+// Re-render adaptive views on screen resize / device rotation
+var _resizeTimer;
+window.addEventListener('resize', function(){
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(function(){
+    if(currentUser){
+      renderReminders();
+      renderEmpTable();
+    }
+  }, 200);
+});
 document.getElementById("remModal").addEventListener("click",function(e){if(e.target===this)closeRemModal();});
 document.getElementById("reassignModal").addEventListener("click",function(e){if(e.target===this)closeReassignModal();});
 document.getElementById("editRemModal").addEventListener("click",function(e){if(e.target===this)closeEditModal();});
