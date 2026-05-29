@@ -814,11 +814,6 @@ tr:hover td{background:#f8fbff;}
     <span>Penalty Cards</span>
     <span class="nav-badge hidden" id="cardBadge">0</span>
   </div>
-  <div class="nav-item" id="nav-profile" onclick="showSec('profile')">
-    <span class="ni"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></span>
-    <span>My Profile</span>
-  </div>
-
   <div class="nav-sep admin-nav-section hidden"></div>
 
   <div class="nav-item hidden" id="nav-employees" onclick="showSec('employees')">
@@ -835,7 +830,7 @@ tr:hover td{background:#f8fbff;}
   </div>
 
   <div class="sb-footer">
-    <div class="user-chip">
+    <div class="user-chip" onclick="showSec('profile')" title="My Profile" style="cursor:pointer;padding:7px 8px;border-radius:10px;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background=''">
       <div class="avatar" id="sbAvatar">AD</div>
       <div class="uc-info" style="flex:1;min-width:0;">
         <div class="name" id="sbName">Admin</div>
@@ -1005,24 +1000,33 @@ tr:hover td{background:#f8fbff;}
 
   <div class="sp" id="sec-profile">
     <div class="ph">
-      <div class="ph-left"><h2>My Profile</h2><p>Manage your account security</p></div>
+      <div class="ph-left"><h2>My Account</h2><p id="profileSubtitle">View your profile and manage security</p></div>
     </div>
-    <div class="card" style="max-width:500px;">
+
+    <!-- Profile Info Card (populated by renderProfile) -->
+    <div id="profileInfoCard" style="margin-bottom:1.25rem;"></div>
+
+    <!-- Change Password -->
+    <div class="card" style="max-width:480px;" id="profilePassCard">
       <div class="ch"><span class="ct">Change Password</span></div>
-      <p style="font-size:12px; color:var(--txt2); margin-bottom:1rem;">To update your password, verify your current password below. If you forgot your password, contact an administrator.</p>
-      <div class="fg"><label>Current Password</label>
+      <div id="profilePassNote" style="font-size:12px;color:var(--txt2);margin-bottom:1rem;line-height:1.6;"></div>
+      <div class="fg" id="profOldWrap"><label>Current Password</label>
         <div style="position:relative;">
-            <input id="profOldPass" type="password" placeholder="••••••" style="padding-right:40px;">
-            <button type="button" onclick="togglePassword('profOldPass', this)" style="position:absolute; right:10px; top:10px; background:none; border:none; cursor:pointer; font-size:14px; opacity:0.7;">👁️</button>
+          <input id="profOldPass" type="password" placeholder="Enter current password" style="padding-right:40px;">
+          <button type="button" onclick="togglePassword('profOldPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--txt3);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
       </div>
       <div class="fg"><label>New Password</label>
         <div style="position:relative;">
-            <input id="profNewPass" type="password" placeholder="••••••" style="padding-right:40px;">
-            <button type="button" onclick="togglePassword('profNewPass', this)" style="position:absolute; right:10px; top:10px; background:none; border:none; cursor:pointer; font-size:14px; opacity:0.7;">👁️</button>
+          <input id="profNewPass" type="password" placeholder="Enter new password" style="padding-right:40px;">
+          <button type="button" onclick="togglePassword('profNewPass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--txt3);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
       </div>
-      <button class="btn btn-primary" onclick="changeMyPassword()">Update Password</button>
+      <button class="btn btn-primary btn-sm" id="profPassBtn" onclick="changeMyPassword()">Update Password</button>
     </div>
   </div>
 
@@ -1837,8 +1841,7 @@ function initApp(){
           const el = document.getElementById(adminNavs[i]);
           if(el) el.classList.remove("hidden");
       }
-      const adminSec = document.querySelector(".admin-nav-section");
-      if(adminSec) adminSec.classList.remove("hidden");
+      document.querySelectorAll(".admin-nav-section").forEach(function(el){ el.classList.remove("hidden"); });
 
       document.getElementById("reminderSubtitle").textContent = "Manage & assign reminders to employees";
 
@@ -2079,9 +2082,101 @@ function exportData(prefix, format) {
 /* ══════════════════════════════════════════════
    USER PROFILE & PASSWORD MANAGEMENT
 ══════════════════════════════════════════════ */
+function renderProfile() {
+  const infoCard = document.getElementById("profileInfoCard");
+  const passNote = document.getElementById("profilePassNote");
+  const passBtn  = document.getElementById("profPassBtn");
+  const oldWrap  = document.getElementById("profOldWrap");
+  if (!infoCard) return;
+
+  if (currentRole === "admin") {
+    // Admin: show system summary
+    const total = reminders.length;
+    const done  = reminders.filter(function(r){ return r.done; }).length;
+    const pend  = reminders.filter(function(r){ return !r.done && (!r.reminder || r.reminder < 3); }).length;
+    const esc   = reminders.filter(function(r){ return !r.done && r.reminder >= 3; }).length;
+    infoCard.innerHTML = `
+      <div class="card" style="max-width:480px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:1.25rem;">
+          <div class="avatar av-admin" style="width:52px;height:52px;font-size:18px;flex-shrink:0;">AD</div>
+          <div>
+            <div style="font-size:17px;font-weight:700;color:var(--txt);">Administrator</div>
+            <div style="font-size:12px;color:var(--txt3);margin-top:2px;">Full system access · Avyukta Intellicall</div>
+          </div>
+        </div>
+        <hr>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1rem;">
+          <div style="background:var(--s2);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--txt3);margin-bottom:6px;">EMPLOYEES</div>
+            <div style="font-size:24px;font-weight:800;color:var(--acc);">${employees.length}</div>
+          </div>
+          <div style="background:var(--s2);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--txt3);margin-bottom:6px;">TOTAL REMINDERS</div>
+            <div style="font-size:24px;font-weight:800;color:var(--txt);">${total}</div>
+          </div>
+          <div style="background:rgba(22,163,74,.08);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--ok);margin-bottom:6px;">COMPLETED</div>
+            <div style="font-size:24px;font-weight:800;color:var(--ok);">${done}</div>
+          </div>
+          <div style="background:rgba(220,38,38,.08);border-radius:10px;padding:12px 14px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--err);margin-bottom:6px;">ESCALATED</div>
+            <div style="font-size:24px;font-weight:800;color:var(--err);">${esc}</div>
+          </div>
+        </div>
+      </div>`;
+    // Admin can't change password here — it's in config.php
+    passNote.innerHTML = '<div style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);border-radius:8px;padding:10px 14px;color:var(--warn);font-size:12px;">⚠ Admin password is set in <code style="background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;">config.php</code> on the server. To change it, update <code style="background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;">ADMIN_PASS</code> via SSH.</div>';
+    if (oldWrap) oldWrap.style.display = "none";
+    if (passBtn) passBtn.style.display = "none";
+    return;
+  }
+
+  // Employee: show their info
+  const emp = employees.find(function(e){ return e.user === currentUser; });
+  if (!emp) { infoCard.innerHTML = ''; return; }
+  const myTasks = reminders.filter(function(r){ return r.emp === currentUser; });
+  const myDone  = myTasks.filter(function(r){ return r.done; }).length;
+  const myCards = cards.filter(function(c){ return c.emp === currentUser; }).length;
+  infoCard.innerHTML = `
+    <div class="card" style="max-width:480px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:1.25rem;">
+        <div class="avatar av-emp" style="width:52px;height:52px;font-size:18px;flex-shrink:0;">${emp.name.slice(0,2).toUpperCase()}</div>
+        <div>
+          <div style="font-size:17px;font-weight:700;color:var(--txt);">${emp.name}</div>
+          <div style="font-size:12px;color:var(--txt3);margin-top:2px;">${emp.role||'Employee'} · ${emp.department||'—'}</div>
+        </div>
+      </div>
+      <hr>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1rem;font-size:12px;">
+        <div><span style="color:var(--txt3);font-weight:600;display:block;margin-bottom:2px;text-transform:uppercase;font-size:10px;letter-spacing:.06em;">Employee ID</span><span style="font-family:'DM Mono',monospace;color:var(--acc);">${emp.id}</span></div>
+        <div><span style="color:var(--txt3);font-weight:600;display:block;margin-bottom:2px;text-transform:uppercase;font-size:10px;letter-spacing:.06em;">Username</span><span style="font-family:'DM Mono',monospace;">${emp.user}</span></div>
+        <div><span style="color:var(--txt3);font-weight:600;display:block;margin-bottom:2px;text-transform:uppercase;font-size:10px;letter-spacing:.06em;">Phone</span>${emp.phone}</div>
+        <div><span style="color:var(--txt3);font-weight:600;display:block;margin-bottom:2px;text-transform:uppercase;font-size:10px;letter-spacing:.06em;">Email</span>${emp.email}</div>
+      </div>
+      <hr>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:1rem;text-align:center;">
+        <div style="background:var(--s2);border-radius:9px;padding:10px 8px;">
+          <div style="font-size:20px;font-weight:800;color:var(--acc);">${myTasks.length}</div>
+          <div style="font-size:10px;color:var(--txt3);font-weight:600;margin-top:2px;">TOTAL</div>
+        </div>
+        <div style="background:rgba(22,163,74,.08);border-radius:9px;padding:10px 8px;">
+          <div style="font-size:20px;font-weight:800;color:var(--ok);">${myDone}</div>
+          <div style="font-size:10px;color:var(--ok);font-weight:600;margin-top:2px;">DONE</div>
+        </div>
+        <div style="background:rgba(220,38,38,.08);border-radius:9px;padding:10px 8px;">
+          <div style="font-size:20px;font-weight:800;color:var(--err);">${myCards}</div>
+          <div style="font-size:10px;color:var(--err);font-weight:600;margin-top:2px;">CARDS</div>
+        </div>
+      </div>
+    </div>`;
+  passNote.innerHTML = 'Verify your current password to set a new one. If you forgot it, ask an administrator to reset it.';
+  if (oldWrap) oldWrap.style.display = "";
+  if (passBtn) passBtn.style.display = "";
+}
+
 function changeMyPassword() {
   if (currentRole === "admin") {
-      showToast("Administrator password cannot be changed here.", "warn");
+      showToast("Admin password is in config.php — change ADMIN_PASS via SSH.", "warn");
       return;
   }
   const oldP = document.getElementById("profOldPass").value;
@@ -3294,12 +3389,13 @@ function showToast(msg, type){
   }
 }
 
-function refreshAll(){ 
-  renderDashboard(); 
-  renderReminders(); 
-  renderCards(); 
-  renderEmpTable(); 
+function refreshAll(){
+  renderDashboard();
+  renderReminders();
+  renderCards();
+  renderEmpTable();
   renderNotifLog();
+  renderProfile();
   
   const empCountEl = document.getElementById("dataEmpCount");
   const remCountEl = document.getElementById("dataRemCount");
